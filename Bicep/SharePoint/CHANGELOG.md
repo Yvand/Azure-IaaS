@@ -1,4 +1,4 @@
-# Change log for Azure template SharePoint-ADFS
+# Change log for Azure template SharePoint
 
 ## Enhancements & bug-fixes - Unreleased
 
