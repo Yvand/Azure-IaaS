@@ -21,7 +21,7 @@ param location string = resourceGroup().location
 ])
 param sharePointVersion string = 'Subscription-Latest'
 
-@description('Level of configuration to apply on the SharePoint farm. The higher the level, the more configuration will be applied, and the longer the deployment will take. The \'Minimum\' level applies only the necessary configuration to have a functional SharePoint farm, and is recommended for most use cases. The \'Full\' level applies a more complete configuration that is closer to a production-like environment, but is not required for most scenarios.')
+@description('Level of configuration to apply on the SharePoint farm.')
 @allowed([
   'Minimum'
   'Light'
@@ -30,8 +30,8 @@ param sharePointVersion string = 'Subscription-Latest'
 ])
 param sharePointConfigurationLevel string = 'Light'
 
-@description('Set to true to ensure the default zone of the main web application uses HTTPS protocol.')
-param DefaultZoneMustBeHttp bool = false
+@description('Set to true if the default zone of the main web application must use HTTPS protocol.')
+param defaultZoneMustBeHttps bool = false
 
 @description('FQDN of the Active Directory forest.')
 @minLength(5)
@@ -289,8 +289,9 @@ param vmSharePointSize string = 'Standard_B4as_v2'
 ])
 param vmSharePointStorage string = 'StandardSSD_LRS'
 
-@description('The base URI where artifacts required by this template are located including a trailing \'/\'')
-param _artifactsLocation string = deployment().properties.templateLink.uri
+@description('The base URI where artifacts required by this template are located.')
+ //param _artifactsLocation string = uri(deployment().properties.templateLink.uri, 'dsc/')
+param _artifactsLocation string = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.1.0/'
 
 @secure()
 @description('The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured.')
@@ -398,7 +399,7 @@ var sharePointSettings = {
       Label: 'SPLatest'
       Packages: [
         {
-          DownloadUrl: 'https://download.microsoft.com/download/893696ea-60b1-443b-9794-a303597e6c12/uber-subscription-kb5002833-fullfile-x64-glb.exe'
+          DownloadUrl: 'https://download.microsoft.com/download/9246c84a-1461-48be-8aee-6b99dc65f5cf/uber-subscription-kb5002843-fullfile-x64-glb.exe'
         }
       ]
     }
@@ -542,6 +543,14 @@ var baseVirtualMachines = [
           UserName: environmentSettings.adfsSvcUserName
           Password: otherAccountsPassword
         }
+        SqlSvcCreds: {
+          UserName: environmentSettings.sqlSvcUserName
+          Password: otherAccountsPassword
+        }
+        SPSetupCreds: {
+          UserName: environmentSettings.spSetupUserName
+          Password: otherAccountsPassword
+        }
       }
     }
   }
@@ -585,6 +594,7 @@ var baseVirtualMachines = [
       configurationArguments: {
         DNSServerIP: environmentSettings.dcPrivateIPAddress
         DomainFQDN: domainFqdn
+        SPSetupUserName: environmentSettings.spSetupUserName
       }
       privacy: {
         dataCollection: 'enable'
@@ -598,10 +608,6 @@ var baseVirtualMachines = [
         }
         SqlSvcCreds: {
           UserName: environmentSettings.sqlSvcUserName
-          Password: otherAccountsPassword
-        }
-        SPSetupCreds: {
-          UserName: environmentSettings.spSetupUserName
           Password: otherAccountsPassword
         }
       }
@@ -658,7 +664,7 @@ var baseVirtualMachines = [
         SharePointCentralAdminPort: environmentSettings.sharePointCentralAdminPort
         EnableAnalysis: environmentSettings.enableAnalysis
         SharePointBits: environmentSettings.sharePointBitsDsc
-        DefaultZoneMustBeHttp: DefaultZoneMustBeHttp
+        DefaultZoneMustBeHttp: defaultZoneMustBeHttps
         ConfigurationLevel: sharePointConfigurationLevel
       }
       privacy: {
@@ -740,10 +746,12 @@ var frontendVirtualMachinesSettings = {
       DCServerName: templateSettings.vmDCName
       SQLServerName: templateSettings.vmSQLName
       SQLAlias: environmentSettings.sqlAlias
-      SharePointVersion: sharePointVersion
+      SharePointVersion: environmentSettings.sharePointVersion
       SharePointSitesAuthority: environmentSettings.sharePointSitesAuthority
       EnableAnalysis: environmentSettings.enableAnalysis
       SharePointBits: environmentSettings.sharePointBitsDsc
+      DefaultZoneMustBeHttp: defaultZoneMustBeHttps
+      ConfigurationLevel: sharePointConfigurationLevel
     }
     privacy: {
       dataCollection: 'enable'
