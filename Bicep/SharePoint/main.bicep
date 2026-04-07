@@ -430,7 +430,9 @@ var environmentSettings = {
   sharePointBitsDsc: (sharePointSettings.isSharePointSubscription
     ? sharePointSettings.sharePointSubscriptionBits
     : '')
-  sharePointVersion: 'SP${split(sharePointVersion, '-')[1]}'
+  sharePointVersion: (sharePointSettings.isSharePointSubscription
+    ? 'SP${split(sharePointVersion, '-')[1]}'
+    : sharePointVersion)
   localAdminUserName: 'l-${uniqueString(subscription().subscriptionId)}'
   enableAnalysis: false
   applyBrowserPolicies: true
