@@ -6,6 +6,7 @@
 
 - Value `Subscription-Latest` for parameter `sharePointVersion` now installs the March 2026 PU for SharePoint Subscription
 - This template now uses the DSC configurations published in repository https://github.com/Yvand/SharePointInfraDsc, specifically the [v2.1.0](https://github.com/Yvand/SharePointInfraDsc/releases/tag/releases%2Fv2.1.0), which contains [significant improvements](https://github.com/Yvand/SharePointInfraDsc/blob/main/CHANGELOG.md#210---2026-04-02)
+- Updates the version of Bicep modules and resources
 
 ## Enhancements & bug-fixes - Published in December 5, 2025
 
