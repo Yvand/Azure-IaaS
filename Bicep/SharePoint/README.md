@@ -93,7 +93,7 @@ IMPORTANT: If you set parameter `outboundAccessMethod` to `AzureFirewallProxy`, 
 
 - The resource group name is used:
   - As the name of the Azure resource group which hosts all the resources that will be created.
-  - As part of the public DNS name of the virtual machines, if a public IP is created (parameter `outboundAccessMethod`) and has a DNS name associated with it (parameter `addNameToPublicIpAddresses`).
+  - As part of the public DNS name of the virtual machines, if they get a public IP (parameter `outboundAccessMethod`), and a DNS name associated with it (parameter `addNameToPublicIpAddresses`).
 - Parameter `enableHybridBenefitServerLicenses` allows you to enable Azure Hybrid Benefit to use your on-premises Windows Server licenses and reduce cost, if you are eligible. See [this page](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) for more information..
 
 ## Outputs

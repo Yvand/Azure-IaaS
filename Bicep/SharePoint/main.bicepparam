@@ -1,9 +1,9 @@
 using './main.bicep'
 
 param sharePointVersion = 'Subscription-RTM'
-// param sharePointVersion = '2016'
-param sharePointConfigurationLevel = 'Minimum'
-param defaultZoneMustBeHttps = false
+// param sharePointVersion = '2019'
+param sharePointConfigurationLevel = 'Light'
+param defaultZoneMustBeHttps = true
 param frontEndServersCount = 0
 param adminUsername = 'yvand'
 param outboundAccessMethod = 'PublicIPAddress'
@@ -13,7 +13,8 @@ param rdpTrafficRule = 'No'
 param enableAzureBastion = true
 param enableHybridBenefitServerLicenses = true
 // param _artifactsLocation = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.0.0/'
-param _artifactsLocation = 'https://raw.githubusercontent.com/Yvand/SharePointInfraDsc/refs/heads/dev/src/'
+param _artifactsLocation = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.2.0-preview.1/'
+// param _artifactsLocation = 'https://raw.githubusercontent.com/Yvand/SharePointInfraDsc/refs/heads/dev/src/'
 param domainFqdn = 'contoso.local'
 param timeZone = 'Romance Standard Time'
 param autoShutdownTime = '1900'

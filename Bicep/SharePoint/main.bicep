@@ -33,11 +33,7 @@ param sharePointConfigurationLevel string = 'Light'
 @description('Set to true if the default zone of the main web application must use HTTPS protocol.')
 param defaultZoneMustBeHttps bool = false
 
-@description('FQDN of the Active Directory forest.')
-@minLength(5)
-param domainFqdn string = 'contoso.local'
-
-@description('Number of servers with MinRole Front-end to add to the farm.')
+@description('Number of additional servers with the MinRole front-end to add to the farm.')
 @allowed([
   0
   1
@@ -46,6 +42,10 @@ param domainFqdn string = 'contoso.local'
   4
 ])
 param frontEndServersCount int = 0
+
+@description('FQDN of the Active Directory forest.')
+@minLength(5)
+param domainFqdn string = 'contoso.local'
 
 @description('Name of the Active Directory and SharePoint administrator. "admin" and "administrator" are not allowed.')
 @minLength(1)
@@ -80,7 +80,7 @@ IMPORTANT: With AzureFirewallProxy, you need to either enable Azure Bastion, or 
 ])
 param outboundAccessMethod string = 'PublicIPAddress'
 
-@description('Set if the Public IP addresses of virtual machines should have a name label.')
+@description('If a virtual machine has a public IP address, specify if it should also have a public DNS name.')
 @allowed([
   'No'
   'SharePointVMsOnly'
@@ -88,13 +88,13 @@ param outboundAccessMethod string = 'PublicIPAddress'
 ])
 param addNameToPublicIpAddresses string = 'SharePointVMsOnly'
 
-@description('Specify if Azure Bastion should be provisioned. See https://azure.microsoft.com/en-us/services/azure-bastion for more information.')
+@description('Specify if Azure Bastion Developer should be provisioned. See https://go.microsoft.com/fwlink/?linkid=2249215 for more information.')
 param enableAzureBastion bool = false
 
 @description('Enable the Azure Hybrid Benefit on virtual machines, to use your on-premises Windows Server licenses and reduce cost. See https://docs.microsoft.com/en-us/azure/virtual-machines/windows/hybrid-use-benefit-licensing for more information.')
 param enableHybridBenefitServerLicenses bool = false
 
-@description('Time zone of the virtual machines. Type "[TimeZoneInfo]::GetSystemTimeZones().Id" in PowerShell to get the list.')
+@description('Time zone of the virtual machines (also used for the parameter autoShutdownTime).')
 @minLength(2)
 @allowed([
   'Dateline Standard Time'

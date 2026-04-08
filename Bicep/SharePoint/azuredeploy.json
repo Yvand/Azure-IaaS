@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.41.2.15936",
-      "templateHash": "9312019206130389743"
+      "version": "0.42.1.51946",
+      "templateHash": "3699949939977425064"
     },
     "description": "Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key softwares (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).",
     "author": "Yvand"
@@ -58,14 +58,6 @@
         "description": "Set to true if the default zone of the main web application must use HTTPS protocol."
       }
     },
-    "domainFqdn": {
-      "type": "string",
-      "defaultValue": "contoso.local",
-      "minLength": 5,
-      "metadata": {
-        "description": "FQDN of the Active Directory forest."
-      }
-    },
     "frontEndServersCount": {
       "type": "int",
       "defaultValue": 0,
@@ -77,7 +69,15 @@
         4
       ],
       "metadata": {
-        "description": "Number of servers with MinRole Front-end to add to the farm."
+        "description": "Number of additional servers with the MinRole front-end to add to the farm."
+      }
+    },
+    "domainFqdn": {
+      "type": "string",
+      "defaultValue": "contoso.local",
+      "minLength": 5,
+      "metadata": {
+        "description": "FQDN of the Active Directory forest."
       }
     },
     "adminUsername": {
@@ -129,14 +129,14 @@
         "Yes"
       ],
       "metadata": {
-        "description": "Set if the Public IP addresses of virtual machines should have a name label."
+        "description": "If a virtual machine has a public IP address, specify if it should also have a public DNS name."
       }
     },
     "enableAzureBastion": {
       "type": "bool",
       "defaultValue": false,
       "metadata": {
-        "description": "Specify if Azure Bastion should be provisioned. See https://azure.microsoft.com/en-us/services/azure-bastion for more information."
+        "description": "Specify if Azure Bastion Developer should be provisioned. See https://go.microsoft.com/fwlink/?linkid=2249215 for more information."
       }
     },
     "enableHybridBenefitServerLicenses": {
@@ -292,7 +292,7 @@
       ],
       "minLength": 2,
       "metadata": {
-        "description": "Time zone of the virtual machines. Type \"[TimeZoneInfo]::GetSystemTimeZones().Id\" in PowerShell to get the list."
+        "description": "Time zone of the virtual machines (also used for the parameter autoShutdownTime)."
       }
     },
     "autoShutdownTime": {
@@ -516,7 +516,7 @@
       "sharePointSitesAuthority": "spsites",
       "sharePointCentralAdminPort": 5000,
       "sharePointBitsDsc": "[if(variables('sharePointSettings').isSharePointSubscription, variables('sharePointSettings').sharePointSubscriptionBits, '')]",
-      "sharePointVersion": "[format('SP{0}', split(parameters('sharePointVersion'), '-')[1])]",
+      "sharePointVersion": "[if(variables('sharePointSettings').isSharePointSubscription, format('SP{0}', split(parameters('sharePointVersion'), '-')[1]), parameters('sharePointVersion'))]",
       "localAdminUserName": "[format('l-{0}', uniqueString(subscription().subscriptionId))]",
       "enableAnalysis": false,
       "applyBrowserPolicies": true,
@@ -847,8 +847,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.41.2.15936",
-              "templateHash": "15897317912661369445"
+              "version": "0.42.1.51946",
+              "templateHash": "2010300059964324862"
             }
           },
           "parameters": {
@@ -3319,8 +3319,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.41.2.15936",
-              "templateHash": "12744571091274827993"
+              "version": "0.42.1.51946",
+              "templateHash": "3160452397084943087"
             }
           },
           "parameters": {
@@ -12704,8 +12704,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.41.2.15936",
-              "templateHash": "12744571091274827993"
+              "version": "0.42.1.51946",
+              "templateHash": "3160452397084943087"
             }
           },
           "parameters": {
@@ -22040,8 +22040,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.41.2.15936",
-              "templateHash": "14274174757428621735"
+              "version": "0.42.1.51946",
+              "templateHash": "7979068182686878831"
             }
           },
           "parameters": {
@@ -23785,8 +23785,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.41.2.15936",
-              "templateHash": "9534828202438411258"
+              "version": "0.42.1.51946",
+              "templateHash": "5267266930254667813"
             }
           },
           "parameters": {
