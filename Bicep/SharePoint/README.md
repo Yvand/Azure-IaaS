@@ -9,11 +9,9 @@ languages:
 - bicep
 - json
 ---
-# A template for Azure to deploy SharePoint Subscription / 2019 / 2016
+# A template to deploy SharePoint Subscription / 2019 / 2016
 
-This template creates a secure, highly customizable SharePoint Subscription / 2019 / 2016 farm, in your own Azure subscription.
-
-The Azure resources are provisioned using [Azure Verified Modules](https://azure.github.io/Azure-Verified-Modules/), and the virtual machines are configured with DSC (desired state configuration), using the [project SharePointInfraDsc](https://github.com/Yvand/SharePointInfraDsc).
+This template creates a secure, highly customizable SharePoint Subscription / 2019 / 2016 farm, using [Azure Verified Modules](https://azure.github.io/Azure-Verified-Modules/), and the [project SharePointInfraDsc](https://github.com/Yvand/SharePointInfraDsc) to apply the DSC (desired state configuration) to the virtual machines.
 
 ## Main objectives
 
@@ -34,9 +32,9 @@ About SharePoint legacy: SharePoint 2016 / 2019 use outdated images ([2016](http
 
 ## Usage
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FYvand%2FAzure-IaaS%2Frefs%2Fheads%2Fmaster%2FAzure%2520Resource%2520Manager%2FSharePoint%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FYvand%2FAzure-IaaS%2Frefs%2Fheads%2Fmaster%2FAzure%2520Resource%2520Manager%2FSharePoint%2Fazuredeploy.json)
-[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FYvand%2FAzure-IaaS%2Frefs%2Fheads%2Fmaster%2FAzure%2520Resource%2520Manager%2FSharePoint%2Fazuredeploy.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FYvand%2FAzure-IaaS%2Frefs%2Fheads%2Fmaster%2FBicep%2FSharePoint%2Fazuredeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FYvand%2FAzure-IaaS%2Frefs%2Fheads%2Fmaster%2FBicep%2FSharePoint%2Fazuredeploy.json)
+[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FYvand%2FAzure-IaaS%2Frefs%2Fheads%2Fmaster%2FBicep%2FSharePoint%2Fazuredeploy.json)
 
 > **Note:** A public version of this template is available at <https://azure.microsoft.com/resources/templates/sharepoint-adfs/>
 
@@ -79,11 +77,11 @@ The outbound access method depends on parameter `outboundAccessMethod`:
 
 The remote access to the virtual machines depends on the following parameters:
 
-- Parameter `rdp_traffic_rule` specifies if a rule in the network security groups should allow the inbound RDP traffic:
+- Parameter `rdpTrafficRule` specifies if a rule in the network security groups should allow the inbound RDP traffic:
     - `No` (default): No rule is created, RDP traffic is blocked.
     - `*` or `Internet`: RDP traffic is allowed from everywhere.
     - CIDR notation (e.g. `192.168.99.0/24` or `2001:1234::/64`) or an IP address (e.g. `192.168.99.0` or `2001:1234::`): RDP traffic is allowed from the IP address / pattern specified.
-- Parameter `enable_azure_bastion`:
+- Parameter `enableAzureBastion`:
   - if `true`: Configure service [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) with Basic SKU, to allow a secure remote access to virtual machines.
   - if `false` (default): Service [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) is not created.
 

@@ -1,6 +1,8 @@
 # Change log for Azure template SharePoint
 
-## Enhancements & bug-fixes - Unreleased
+## Unreleased
+
+## Enhancements & bug-fixes - Published in April 15, 2026
 
 ### Changed
 
