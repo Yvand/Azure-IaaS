@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.42.1.51946",
-      "templateHash": "3699949939977425064"
+      "templateHash": "11959963631420590493"
     },
     "description": "Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key softwares (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).",
     "author": "Yvand"
@@ -375,7 +375,7 @@
     },
     "_artifactsLocation": {
       "type": "string",
-      "defaultValue": "https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.1.0/",
+      "defaultValue": "https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.3.0/",
       "metadata": {
         "description": "The base URI where artifacts required by this template are located."
       }
@@ -493,7 +493,7 @@
           "Label": "SPLatest",
           "Packages": [
             {
-              "DownloadUrl": "https://download.microsoft.com/download/9246c84a-1461-48be-8aee-6b99dc65f5cf/uber-subscription-kb5002843-fullfile-x64-glb.exe"
+              "DownloadUrl": "https://download.microsoft.com/download/f839c57c-7b4e-4213-b03b-2c1508e13588/uber-subscription-kb5002853-fullfile-x64-glb.exe"
             }
           ]
         }
@@ -22041,7 +22041,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.42.1.51946",
-              "templateHash": "7979068182686878831"
+              "templateHash": "18318687127388919519"
             }
           },
           "parameters": {
@@ -22086,8 +22086,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.37.4.10188",
-                      "templateHash": "8154163068428418954"
+                      "version": "0.39.26.7824",
+                      "templateHash": "7741601918225805390"
                     },
                     "name": "Bastion Hosts",
                     "description": "This module deploys a Bastion Host."
@@ -22281,7 +22281,7 @@
                       },
                       "metadata": {
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/public-ip-address:0.9.0"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/public-ip-address:0.10.0"
                         }
                       }
                     },
@@ -22543,7 +22543,7 @@
                       },
                       "metadata": {
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/public-ip-address:0.9.0"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/public-ip-address:0.10.0"
                         }
                       }
                     },
@@ -22565,7 +22565,7 @@
                       },
                       "metadata": {
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/public-ip-address:0.9.0"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/public-ip-address:0.10.0"
                         }
                       }
                     },
@@ -22869,7 +22869,7 @@
                       "condition": "[parameters('enableTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2024-03-01",
-                      "name": "[format('46d3xbcp.res.network-bastionhost.{0}.{1}', replace('0.8.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+                      "name": "[format('46d3xbcp.res.network-bastionhost.{0}.{1}', replace('0.8.2', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
                       "properties": {
                         "mode": "Incremental",
                         "template": {
@@ -22887,7 +22887,7 @@
                     },
                     "azureBastion": {
                       "type": "Microsoft.Network/bastionHosts",
-                      "apiVersion": "2024-07-01",
+                      "apiVersion": "2025-01-01",
                       "name": "[parameters('name')]",
                       "location": "[parameters('location')]",
                       "tags": "[coalesce(parameters('tags'), createObject())]",
@@ -22971,8 +22971,8 @@
                     "publicIPAddress": {
                       "condition": "[and(and(empty(parameters('bastionSubnetPublicIpResourceId')), not(equals(parameters('skuName'), 'Developer'))), not(parameters('enablePrivateOnlyBastion')))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2022-09-01",
-                      "name": "[format('{0}-Bastion-PIP', uniqueString(deployment().name, parameters('location')))]",
+                      "apiVersion": "2025-04-01",
+                      "name": "[format('{0}-Bastion-PIP', uniqueString(subscription().id, resourceGroup().id, parameters('location')))]",
                       "properties": {
                         "expressionEvaluationOptions": {
                           "scope": "inner"
@@ -23038,8 +23038,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.36.177.2456",
-                              "templateHash": "14921988046704902194"
+                              "version": "0.39.26.7824",
+                              "templateHash": "16564959277054027786"
                             },
                             "name": "Public IP Addresses",
                             "description": "This module deploys a Public IP Address."
@@ -23256,7 +23256,7 @@
                               "metadata": {
                                 "description": "An AVM-aligned type for a diagnostic setting. To be used if both logs & metrics are supported by the resource provider.",
                                 "__bicep_imported_from!": {
-                                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+                                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                 }
                               }
                             },
@@ -23281,12 +23281,19 @@
                                   "metadata": {
                                     "description": "Optional. Specify the type of lock."
                                   }
+                                },
+                                "notes": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "metadata": {
+                                    "description": "Optional. Specify the notes of the lock."
+                                  }
                                 }
                               },
                               "metadata": {
                                 "description": "An AVM-aligned type for a lock.",
                                 "__bicep_imported_from!": {
-                                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+                                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                 }
                               }
                             },
@@ -23361,7 +23368,7 @@
                               "metadata": {
                                 "description": "An AVM-aligned type for a role assignment.",
                                 "__bicep_imported_from!": {
-                                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+                                  "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                 }
                               }
                             }
@@ -23474,6 +23481,17 @@
                                 "description": "Optional. The DDoS protection plan configuration associated with the public IP address."
                               }
                             },
+                            "deleteOption": {
+                              "type": "string",
+                              "nullable": true,
+                              "allowedValues": [
+                                "Delete",
+                                "Detach"
+                              ],
+                              "metadata": {
+                                "description": "Optional. The delete option for the public IP address."
+                              }
+                            },
                             "location": {
                               "type": "string",
                               "defaultValue": "[resourceGroup().location]",
@@ -23507,10 +23525,13 @@
                             },
                             "tags": {
                               "type": "object",
-                              "nullable": true,
                               "metadata": {
+                                "__bicep_resource_derived_type!": {
+                                  "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/tags"
+                                },
                                 "description": "Optional. Tags of the resource."
-                              }
+                              },
+                              "nullable": true
                             },
                             "diagnosticSettings": {
                               "type": "array",
@@ -23549,7 +23570,7 @@
                               "condition": "[parameters('enableTelemetry')]",
                               "type": "Microsoft.Resources/deployments",
                               "apiVersion": "2024-03-01",
-                              "name": "[format('46d3xbcp.res.network-publicipaddress.{0}.{1}', replace('0.9.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+                              "name": "[format('46d3xbcp.res.network-publicipaddress.{0}.{1}', replace('0.10.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
                               "properties": {
                                 "mode": "Incremental",
                                 "template": {
@@ -23567,7 +23588,7 @@
                             },
                             "publicIpAddress": {
                               "type": "Microsoft.Network/publicIPAddresses",
-                              "apiVersion": "2024-05-01",
+                              "apiVersion": "2025-01-01",
                               "name": "[parameters('name')]",
                               "location": "[parameters('location')]",
                               "tags": "[parameters('tags')]",
@@ -23583,7 +23604,8 @@
                                 "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                                 "publicIPPrefix": "[if(not(empty(parameters('publicIpPrefixResourceId'))), createObject('id', parameters('publicIpPrefixResourceId')), null())]",
                                 "idleTimeoutInMinutes": "[parameters('idleTimeoutInMinutes')]",
-                                "ipTags": "[parameters('ipTags')]"
+                                "ipTags": "[parameters('ipTags')]",
+                                "deleteOption": "[parameters('deleteOption')]"
                               }
                             },
                             "publicIpAddress_lock": {
@@ -23594,7 +23616,7 @@
                               "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
                               "properties": {
                                 "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
-                                "notes": "[if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.')]"
+                                "notes": "[coalesce(tryGet(parameters('lock'), 'notes'), if(equals(tryGet(parameters('lock'), 'kind'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot delete or modify the resource or child resources.'))]"
                               },
                               "dependsOn": [
                                 "publicIpAddress"
@@ -23698,7 +23720,7 @@
                               "metadata": {
                                 "description": "The location the resource was deployed into."
                               },
-                              "value": "[reference('publicIpAddress', '2024-05-01', 'full').location]"
+                              "value": "[reference('publicIpAddress', '2025-01-01', 'full').location]"
                             }
                           }
                         }
@@ -23732,7 +23754,7 @@
                       "metadata": {
                         "description": "The location the resource was deployed into."
                       },
-                      "value": "[reference('azureBastion', '2024-07-01', 'full').location]"
+                      "value": "[reference('azureBastion', '2025-01-01', 'full').location]"
                     },
                     "ipConfAzureBastionSubnet": {
                       "type": "object",
@@ -23786,7 +23808,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.42.1.51946",
-              "templateHash": "5267266930254667813"
+              "templateHash": "13233699021818851542"
             }
           },
           "parameters": {
@@ -23821,7 +23843,7 @@
           "resources": [
             {
               "type": "Microsoft.Network/virtualNetworks/subnets",
-              "apiVersion": "2024-10-01",
+              "apiVersion": "2025-05-01",
               "name": "[format('{0}/{1}', parameters('virtualNetworkName'), 'AzureFirewallSubnet')]",
               "properties": {
                 "addressPrefix": "[parameters('addressPrefix')]",
@@ -23830,7 +23852,7 @@
             },
             {
               "type": "Microsoft.Network/firewallPolicies",
-              "apiVersion": "2024-10-01",
+              "apiVersion": "2025-05-01",
               "name": "firewall-policy-proxy",
               "location": "[parameters('location')]",
               "tags": "[parameters('tags')]",
@@ -23849,7 +23871,7 @@
             },
             {
               "type": "Microsoft.Network/firewallPolicies/ruleCollectionGroups",
-              "apiVersion": "2024-10-01",
+              "apiVersion": "2025-05-01",
               "name": "[format('{0}/{1}', 'firewall-policy-proxy', 'rules')]",
               "properties": {
                 "priority": 100,
