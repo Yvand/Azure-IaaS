@@ -7,35 +7,53 @@
             "label": "remove state file",
             "type": "shell",
             "command": "rm",
-            "args": ["-f", "terraform.tfstate"],
+            "args": [
+                "-f",
+                "terraform.tfstate"
+            ],
             "hide": true
         },
         {
             "label": "terraform apply",
             "type": "shell",
-            "command": "terraform get -update && terraform fmt && terraform apply -var-file=/home/yvand/terraform-sharepoint-secrets.tfvars -refresh=false",
+            "command": "terraform fmt && terraform apply -var-file=/home/yvand/terraform-sharepoint-secrets.tfvars -refresh=false -auto-approve",
             "problemMatcher": [],
-            "dependsOn": ["remove state file"],
+            "dependsOn": [
+                "remove state file"
+            ],
             "presentation": {
                 "reveal": "always",
                 "panel": "dedicated",
                 "clear": true,
-                "focus": true
+                "focus": false
             }
         },
         {
             "label": "remove resources and state file",
             "type": "shell",
             "command": "az",
-            "args": ["group", "delete", "--name", "${input:resourceGrouppName}", "--force-deletion-types", "Microsoft.Compute/virtualMachines", "--yes"],
+            "args": [
+                "group",
+                "delete",
+                "--name",
+                "${input:resourceGrouppName}",
+                "--force-deletion-types",
+                "Microsoft.Compute/virtualMachines",
+                "--yes"
+            ],
             "problemMatcher": [],
-            "dependsOn": ["remove state file"]
+            "dependsOn": [
+                "remove state file"
+            ]
         },
         {
             "label": "upgrade providers",
             "type": "shell",
             "command": "terraform",
-            "args": ["init", "-upgrade"],
+            "args": [
+                "init",
+                "-upgrade"
+            ],
             "problemMatcher": []
         }
     ],

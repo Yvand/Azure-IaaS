@@ -8,11 +8,13 @@ variable "tags" {}
 
 module "sharepoint" {
   source                                = "Yvand/sharepoint/azurerm"
-  version                               = "~> 7.0"
+  version                               = "~> 8.0"
   location                              = "francecentral"
   subscription_id                       = var.subscription_id
   resource_group_name                   = var.resource_group_name
   sharepoint_version                    = "Subscription-Latest" #"2019"
+  sharepoint_configuration_level        = "Medium"
+  default_zone_must_be_https            = true
   outbound_access_method                = "PublicIPAddress"
   rdp_traffic_rule                      = var.rdp_traffic_rule
   enable_azure_bastion                  = true
@@ -23,5 +25,6 @@ module "sharepoint" {
   enable_hybrid_benefit_server_licenses = true
   add_default_tags                      = true
   tags                                  = var.tags
+  front_end_servers_count               = 0
   # _artifactsLocation                    = var._artifactsLocation
 }
