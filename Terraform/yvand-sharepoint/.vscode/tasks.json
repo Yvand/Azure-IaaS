@@ -16,7 +16,7 @@
         {
             "label": "terraform apply",
             "type": "shell",
-            "command": "terraform fmt && terraform apply -var-file=/home/yvand/terraform-sharepoint-secrets.tfvars -refresh=false -auto-approve",
+            "command": "terraform get -update && terraform fmt && terraform apply -var-file=/home/yvand/terraform-sharepoint-secrets.tfvars -refresh=false -auto-approve",
             "problemMatcher": [],
             "dependsOn": [
                 "remove state file"
