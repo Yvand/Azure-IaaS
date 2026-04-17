@@ -23,12 +23,24 @@ param sharePointVersion string = 'Subscription-Latest'
 
 @description('Level of configuration to apply on the SharePoint farm.')
 @allowed([
+  'Custom'
   'Minimum'
   'Light'
   'Medium'
   'Full'
 ])
 param sharePointConfigurationLevel string = 'Light'
+
+@description('Configuration to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to "Custom".')
+@allowed([
+  'TrustedAuthentication'
+  'UserProfilesService'
+  'ExtendedWebApplication'
+  'Addins'
+  'HostNamedSiteCollections'
+  'StateService'
+])
+param customSharePointConfiguration array = []
 
 @description('Set to true if the default zone of the main web application must use HTTPS protocol.')
 param defaultZoneMustBeHttps bool = false
@@ -667,7 +679,8 @@ var baseVirtualMachines = [
         EnableAnalysis: environmentSettings.enableAnalysis
         SharePointBits: environmentSettings.sharePointBitsDsc
         DefaultZoneMustBeHttp: defaultZoneMustBeHttps
-        ConfigurationLevel: sharePointConfigurationLevel
+        SharePointConfigurationLevel: sharePointConfigurationLevel
+        CustomSharePointConfiguration: customSharePointConfiguration
       }
       privacy: {
         dataCollection: 'enable'
@@ -753,7 +766,8 @@ var frontendVirtualMachinesSettings = {
       EnableAnalysis: environmentSettings.enableAnalysis
       SharePointBits: environmentSettings.sharePointBitsDsc
       DefaultZoneMustBeHttp: defaultZoneMustBeHttps
-      ConfigurationLevel: sharePointConfigurationLevel
+      SharePointConfigurationLevel: sharePointConfigurationLevel
+      CustomSharePointConfiguration: customSharePointConfiguration
     }
     privacy: {
       dataCollection: 'enable'
