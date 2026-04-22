@@ -38,7 +38,7 @@ param sharePointConfigurationLevel string = 'Light'
   'UserProfilesService'
   'ExtendedWebApplication'
   'Addins'
-  'HostNamedSiteCollections'
+  'AdditionalSiteCollections'
   'StateService'
 ])
 param customSharePointConfiguration array = ['']
@@ -448,7 +448,6 @@ var environmentSettings = {
     : sharePointVersion)
   localAdminUserName: 'l-${uniqueString(subscription().subscriptionId)}'
   enableAnalysis: false
-  applyBrowserPolicies: true
   sqlAlias: 'SQLAlias'
   spSuperUserName: 'spSuperUser'
   spSuperReaderName: 'spSuperReader'
@@ -459,6 +458,7 @@ var environmentSettings = {
   spSvcUserName: 'spsvc'
   spAppPoolUserName: 'spapppool'
   spADDirSyncUserName: 'spdirsync'
+  defaultGlobalConfiguration: ['ApplyBrowserPolicies', 'EnableDscPerformanceAnalysis']
 }
 
 // Azure Firewall proxy settings
@@ -542,7 +542,7 @@ var baseVirtualMachines = [
         SPServerName: templateSettings.vmSPName
         SharePointSitesAuthority: environmentSettings.sharePointSitesAuthority
         SharePointCentralAdminPort: environmentSettings.sharePointCentralAdminPort
-        ApplyBrowserPolicies: environmentSettings.applyBrowserPolicies
+        GlobalConfiguration: environmentSettings.defaultGlobalConfiguration
       }
       privacy: {
         dataCollection: 'enable'
@@ -679,7 +679,7 @@ var baseVirtualMachines = [
         SharePointCentralAdminPort: environmentSettings.sharePointCentralAdminPort
         EnableAnalysis: environmentSettings.enableAnalysis
         SharePointBits: environmentSettings.sharePointBitsDsc
-        DefaultZoneMustBeHttp: defaultZoneMustBeHttps
+        DefaultZoneMustBeHttps: defaultZoneMustBeHttps
         SharePointConfigurationLevel: sharePointConfigurationLevel
         CustomSharePointConfiguration: customSharePointConfiguration
       }
@@ -766,9 +766,6 @@ var frontendVirtualMachinesSettings = {
       SharePointSitesAuthority: environmentSettings.sharePointSitesAuthority
       EnableAnalysis: environmentSettings.enableAnalysis
       SharePointBits: environmentSettings.sharePointBitsDsc
-      DefaultZoneMustBeHttp: defaultZoneMustBeHttps
-      SharePointConfigurationLevel: sharePointConfigurationLevel
-      CustomSharePointConfiguration: customSharePointConfiguration
     }
     privacy: {
       dataCollection: 'enable'

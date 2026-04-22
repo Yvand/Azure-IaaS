@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.42.1.51946",
-      "templateHash": "11151592493436846884"
+      "templateHash": "1804550840887975819"
     },
     "description": "Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key softwares (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).",
     "author": "Yvand"
@@ -63,7 +63,7 @@
         "UserProfilesService",
         "ExtendedWebApplication",
         "Addins",
-        "HostNamedSiteCollections",
+        "AdditionalSiteCollections",
         "StateService"
       ],
       "metadata": {
@@ -538,7 +538,6 @@
       "sharePointVersion": "[if(variables('sharePointSettings').isSharePointSubscription, format('SP{0}', split(parameters('sharePointVersion'), '-')[1]), parameters('sharePointVersion'))]",
       "localAdminUserName": "[format('l-{0}', uniqueString(subscription().subscriptionId))]",
       "enableAnalysis": false,
-      "applyBrowserPolicies": true,
       "sqlAlias": "SQLAlias",
       "spSuperUserName": "spSuperUser",
       "spSuperReaderName": "spSuperReader",
@@ -548,7 +547,11 @@
       "spFarmUserName": "spfarm",
       "spSvcUserName": "spsvc",
       "spAppPoolUserName": "spapppool",
-      "spADDirSyncUserName": "spdirsync"
+      "spADDirSyncUserName": "spdirsync",
+      "defaultGlobalConfiguration": [
+        "ApplyBrowserPolicies",
+        "EnableDscPerformanceAnalysis"
+      ]
     },
     "firewallProxySettings": {
       "firewallAddressPrefix": "[cidrSubnet(variables('templateSettings').vNetPrivatePrefix, 24, 3)]",
@@ -613,7 +616,7 @@
             "SPServerName": "[variables('templateSettings').vmSPName]",
             "SharePointSitesAuthority": "[variables('environmentSettings').sharePointSitesAuthority]",
             "SharePointCentralAdminPort": "[variables('environmentSettings').sharePointCentralAdminPort]",
-            "ApplyBrowserPolicies": "[variables('environmentSettings').applyBrowserPolicies]"
+            "GlobalConfiguration": "[variables('environmentSettings').defaultGlobalConfiguration]"
           },
           "privacy": {
             "dataCollection": "enable"
@@ -721,7 +724,7 @@
             "SharePointCentralAdminPort": "[variables('environmentSettings').sharePointCentralAdminPort]",
             "EnableAnalysis": "[variables('environmentSettings').enableAnalysis]",
             "SharePointBits": "[variables('environmentSettings').sharePointBitsDsc]",
-            "DefaultZoneMustBeHttp": "[parameters('defaultZoneMustBeHttps')]",
+            "DefaultZoneMustBeHttps": "[parameters('defaultZoneMustBeHttps')]",
             "SharePointConfigurationLevel": "[parameters('sharePointConfigurationLevel')]",
             "CustomSharePointConfiguration": "[parameters('customSharePointConfiguration')]"
           },
@@ -803,10 +806,7 @@
           "SharePointVersion": "[variables('environmentSettings').sharePointVersion]",
           "SharePointSitesAuthority": "[variables('environmentSettings').sharePointSitesAuthority]",
           "EnableAnalysis": "[variables('environmentSettings').enableAnalysis]",
-          "SharePointBits": "[variables('environmentSettings').sharePointBitsDsc]",
-          "DefaultZoneMustBeHttp": "[parameters('defaultZoneMustBeHttps')]",
-          "SharePointConfigurationLevel": "[parameters('sharePointConfigurationLevel')]",
-          "CustomSharePointConfiguration": "[parameters('customSharePointConfiguration')]"
+          "SharePointBits": "[variables('environmentSettings').sharePointBitsDsc]"
         },
         "privacy": {
           "dataCollection": "enable"
