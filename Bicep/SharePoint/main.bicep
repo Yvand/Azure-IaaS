@@ -41,7 +41,7 @@ param sharePointConfigurationLevel string = 'Light'
   'HostNamedSiteCollections'
   'StateService'
 ])
-param customSharePointConfiguration array = []
+param customSharePointConfiguration array = ['']
 
 @description('Set to true if the default zone of the main web application must use HTTPS protocol.')
 param defaultZoneMustBeHttps bool = false
