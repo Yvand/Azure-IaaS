@@ -33,6 +33,7 @@ param sharePointConfigurationLevel string = 'Light'
 
 @description('Configuration to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to "Custom".')
 @allowed([
+  ''
   'TrustedAuthentication'
   'UserProfilesService'
   'ExtendedWebApplication'
