@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.42.1.51946",
-      "templateHash": "11959963631420590493"
+      "templateHash": "1941710092299950130"
     },
     "description": "Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key softwares (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).",
     "author": "Yvand"
@@ -42,6 +42,7 @@
       "type": "string",
       "defaultValue": "Light",
       "allowedValues": [
+        "Custom",
         "Minimum",
         "Light",
         "Medium",
@@ -49,6 +50,21 @@
       ],
       "metadata": {
         "description": "Level of configuration to apply on the SharePoint farm."
+      }
+    },
+    "customSharePointConfiguration": {
+      "type": "array",
+      "defaultValue": [],
+      "allowedValues": [
+        "TrustedAuthentication",
+        "UserProfilesService",
+        "ExtendedWebApplication",
+        "Addins",
+        "HostNamedSiteCollections",
+        "StateService"
+      ],
+      "metadata": {
+        "description": "Configuration to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to \"Custom\"."
       }
     },
     "defaultZoneMustBeHttps": {
@@ -703,7 +719,8 @@
             "EnableAnalysis": "[variables('environmentSettings').enableAnalysis]",
             "SharePointBits": "[variables('environmentSettings').sharePointBitsDsc]",
             "DefaultZoneMustBeHttp": "[parameters('defaultZoneMustBeHttps')]",
-            "ConfigurationLevel": "[parameters('sharePointConfigurationLevel')]"
+            "SharePointConfigurationLevel": "[parameters('sharePointConfigurationLevel')]",
+            "CustomSharePointConfiguration": "[parameters('customSharePointConfiguration')]"
           },
           "privacy": {
             "dataCollection": "enable"
@@ -785,7 +802,8 @@
           "EnableAnalysis": "[variables('environmentSettings').enableAnalysis]",
           "SharePointBits": "[variables('environmentSettings').sharePointBitsDsc]",
           "DefaultZoneMustBeHttp": "[parameters('defaultZoneMustBeHttps')]",
-          "ConfigurationLevel": "[parameters('sharePointConfigurationLevel')]"
+          "SharePointConfigurationLevel": "[parameters('sharePointConfigurationLevel')]",
+          "CustomSharePointConfiguration": "[parameters('customSharePointConfiguration')]"
         },
         "privacy": {
           "dataCollection": "enable"
@@ -3320,7 +3338,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.42.1.51946",
-              "templateHash": "3160452397084943087"
+              "templateHash": "13437101254109127807"
             }
           },
           "parameters": {
@@ -3572,8 +3590,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.39.26.7824",
-                      "templateHash": "11442373542874951910"
+                      "version": "0.41.2.15936",
+                      "templateHash": "17174537341033050778"
                     },
                     "name": "Virtual Machines",
                     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs."
@@ -4607,7 +4625,7 @@
                           "type": "object",
                           "properties": {
                             "backendAddressPool": {
-                              "$ref": "#/definitions/subResourceType",
+                              "$ref": "#/definitions/_1.subResourceType",
                               "nullable": true,
                               "metadata": {
                                 "description": "Optional. A reference to backendAddressPool resource."
@@ -4635,7 +4653,7 @@
                               }
                             },
                             "frontendIPConfiguration": {
-                              "$ref": "#/definitions/subResourceType",
+                              "$ref": "#/definitions/_1.subResourceType",
                               "nullable": true,
                               "metadata": {
                                 "description": "Optional. A reference to frontend IP addresses."
@@ -4683,6 +4701,24 @@
                       },
                       "metadata": {
                         "description": "The type for the inbound NAT rule.",
+                        "__bicep_imported_from!": {
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
+                        }
+                      }
+                    },
+                    "_1.subResourceType": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Resource ID of the sub resource."
+                          }
+                        }
+                      },
+                      "metadata": {
+                        "description": "The type for the sub resource.",
                         "__bicep_imported_from!": {
                           "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
                         }
@@ -5355,7 +5391,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a diagnostic setting. To be used if both logs & metrics are supported by the resource provider.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -5424,7 +5460,7 @@
                           }
                         },
                         "gatewayLoadBalancer": {
-                          "$ref": "#/definitions/subResourceType",
+                          "$ref": "#/definitions/_1.subResourceType",
                           "nullable": true,
                           "metadata": {
                             "description": "Optional. The gateway load balancer settings."
@@ -5536,7 +5572,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a lock.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.0"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -5564,7 +5600,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a managed identity configuration. To be used if both a system-assigned & user-assigned identities are supported by the resource provider.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -5593,8 +5629,9 @@
                         }
                       },
                       "metadata": {
+                        "description": "The type for the network interface IP configuration output.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.3"
                         }
                       }
                     },
@@ -5669,7 +5706,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a role assignment.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -5687,7 +5724,7 @@
                       "metadata": {
                         "description": "The type for the sub resource.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.3"
                         }
                       }
                     }
@@ -5744,11 +5781,14 @@
                       }
                     },
                     "imageReference": {
-                      "$ref": "#/definitions/imageReferenceType",
-                      "nullable": true,
+                      "type": "object",
                       "metadata": {
+                        "__bicep_resource_derived_type!": {
+                          "source": "Microsoft.Compute/virtualMachines@2025-04-01#properties/properties/properties/storageProfile/properties/imageReference"
+                        },
                         "description": "Conditional. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. Required if not creating the VM from an existing os-disk via the `osDisk.managedDisk.resourceId` parameter."
-                      }
+                      },
+                      "nullable": true
                     },
                     "plan": {
                       "$ref": "#/definitions/planType",
@@ -6384,14 +6424,16 @@
                       "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
                       "Virtual Machine User Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')]",
                       "VM Scanner Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'd24ecba3-c1f4-40fa-a7bb-4588a071e8fd')]"
-                    }
+                    },
+                    "aadJoinSettings": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'settings'), createObject())]",
+                    "filteredAadJoinSettings": "[if(and(contains(variables('aadJoinSettings'), 'mdmId'), empty(variables('aadJoinSettings').mdmId)), reduce(items(variables('aadJoinSettings')), createObject(), lambda('cur', 'item', if(equals(lambdaVariables('item').key, 'mdmId'), lambdaVariables('cur'), union(lambdaVariables('cur'), createObject(format('{0}', lambdaVariables('item').key), lambdaVariables('item').value))))), variables('aadJoinSettings'))]"
                   },
                   "resources": {
                     "avmTelemetry": {
                       "condition": "[parameters('enableTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2024-03-01",
-                      "name": "[format('46d3xbcp.res.compute-virtualmachine.{0}.{1}', replace('0.21.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+                      "apiVersion": "2024-07-01",
+                      "name": "[format('46d3xbcp.res.compute-virtualmachine.{0}.{1}', replace('0.22.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
                       "properties": {
                         "mode": "Incremental",
                         "template": {
@@ -6412,9 +6454,9 @@
                         "name": "managedDataDisks",
                         "count": "[length(coalesce(parameters('dataDisks'), createArray()))]"
                       },
-                      "condition": "[empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'resourceId'))]",
+                      "condition": "[and(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'resourceId')), not(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'createOption'), 'Empty'), 'FromImage')))]",
                       "type": "Microsoft.Compute/disks",
-                      "apiVersion": "2024-03-02",
+                      "apiVersion": "2025-01-02",
                       "name": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex(), 1), 2, '0')))]",
                       "location": "[parameters('location')]",
                       "sku": {
@@ -6423,14 +6465,14 @@
                       "properties": {
                         "diskSizeGB": "[tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'diskSizeGB')]",
                         "creationData": {
-                          "createOption": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'createoption'), 'Empty')]"
+                          "createOption": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'createOption'), 'Empty')]"
                         },
                         "diskIOPSReadWrite": "[tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'diskIOPSReadWrite')]",
                         "diskMBpsReadWrite": "[tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'diskMBpsReadWrite')]",
                         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
                         "networkAccessPolicy": "[parameters('networkAccessPolicy')]"
                       },
-                      "zones": "[if(and(not(equals(parameters('availabilityZone'), -1)), not(contains(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'storageAccountType'), 'ZRS'))), array(string(parameters('availabilityZone'))), null())]",
+                      "zones": "[if(and(not(equals(parameters('availabilityZone'), -1)), not(contains(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'storageAccountType'), ''), 'ZRS'))), array(string(parameters('availabilityZone'))), null())]",
                       "tags": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'tags'), parameters('tags'))]"
                     },
                     "vm": {
@@ -6455,13 +6497,11 @@
                               "input": {
                                 "lun": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'lun'), copyIndex('dataDisks'))]",
                                 "name": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'))), last(split(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.resourceId, '/')), coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0'))))]",
-                                "createOption": "[if(or(not(equals(if(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null()), null())), not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')))), 'Attach', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createoption'), 'Empty'))]",
+                                "createOption": "[if(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'), 'FromImage', if(or(not(equals(if(and(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), not(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'))), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null()), null())), not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')))), 'Attach', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty')))]",
                                 "deleteOption": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'))), 'Detach', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'deleteOption'), 'Delete'))]",
                                 "caching": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'))), 'None', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'caching'), 'ReadOnly'))]",
-                                "managedDisk": {
-                                  "id": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'), if(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null()))]",
-                                  "diskEncryptionSet": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'diskEncryptionSetResourceId'))), createObject('id', coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.diskEncryptionSetResourceId), null())]"
-                                }
+                                "diskSizeGB": "[if(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'), null(), tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'diskSizeGB'))]",
+                                "managedDisk": "[if(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'), createObject('storageAccountType', tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'storageAccountType'), 'diskEncryptionSet', if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'diskEncryptionSetResourceId'))), createObject('id', coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.diskEncryptionSetResourceId), null())), createObject('id', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'), if(and(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), not(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'))), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null())), 'diskEncryptionSet', if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'diskEncryptionSetResourceId'))), createObject('id', coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.diskEncryptionSetResourceId), null())))]"
                               }
                             }
                           ],
@@ -6528,7 +6568,7 @@
                       "condition": "[not(empty(parameters('maintenanceConfigurationResourceId')))]",
                       "type": "Microsoft.Maintenance/configurationAssignments",
                       "apiVersion": "2023-04-01",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[format('{0}assignment', parameters('name'))]",
                       "location": "[parameters('location')]",
                       "properties": {
@@ -6543,7 +6583,7 @@
                       "condition": "[not(empty(parameters('configurationProfile')))]",
                       "type": "Microsoft.Automanage/configurationProfileAssignments",
                       "apiVersion": "2022-05-04",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "default",
                       "properties": {
                         "configurationProfile": "[parameters('configurationProfile')]"
@@ -6558,6 +6598,7 @@
                       "apiVersion": "2018-09-15",
                       "name": "[format('shutdown-computevm-{0}', parameters('name'))]",
                       "location": "[parameters('location')]",
+                      "tags": "[coalesce(tryGet(parameters('autoShutdownConfig'), 'tags'), parameters('tags'))]",
                       "properties": {
                         "status": "[coalesce(tryGet(parameters('autoShutdownConfig'), 'status'), 'Disabled')]",
                         "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
@@ -6580,7 +6621,7 @@
                       "condition": "[parameters('extensionMonitoringAgentConfig').enabled]",
                       "type": "Microsoft.Insights/dataCollectionRuleAssociations",
                       "apiVersion": "2024-03-11",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[parameters('extensionMonitoringAgentConfig').dataCollectionRuleAssociations[copyIndex()].name]",
                       "properties": {
                         "dataCollectionRuleId": "[parameters('extensionMonitoringAgentConfig').dataCollectionRuleAssociations[copyIndex()].dataCollectionRuleResourceId]"
@@ -6603,7 +6644,7 @@
                       "condition": "[not(empty(parameters('guestConfiguration')))]",
                       "type": "Microsoft.GuestConfiguration/guestConfigurationAssignments",
                       "apiVersion": "2024-04-05",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[coalesce(tryGet(parameters('guestConfiguration'), 'name'), 'AzureWindowsBaseline')]",
                       "location": "[parameters('location')]",
                       "properties": {
@@ -6618,7 +6659,7 @@
                       "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
                       "type": "Microsoft.Authorization/locks",
                       "apiVersion": "2020-05-01",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
                       "properties": {
                         "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
@@ -6635,7 +6676,7 @@
                       },
                       "type": "Microsoft.Authorization/roleAssignments",
                       "apiVersion": "2022-04-01",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Compute/virtualMachines', parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
                       "properties": {
                         "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -6709,8 +6750,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "716745708639313461"
+                              "version": "0.41.2.15936",
+                              "templateHash": "5982155361487304817"
                             }
                           },
                           "definitions": {
@@ -7842,106 +7883,13 @@
                                   "metadata": {
                                     "_generator": {
                                       "name": "bicep",
-                                      "version": "0.38.5.1644",
-                                      "templateHash": "7550528442771433353"
+                                      "version": "0.39.26.7824",
+                                      "templateHash": "5349747633189946992"
                                     },
                                     "name": "Public IP Addresses",
                                     "description": "This module deploys a Public IP Address."
                                   },
                                   "definitions": {
-                                    "dnsSettingsType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "domainNameLabel": {
-                                          "type": "string",
-                                          "metadata": {
-                                            "description": "Required. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
-                                          }
-                                        },
-                                        "domainNameLabelScope": {
-                                          "type": "string",
-                                          "allowedValues": [
-                                            "NoReuse",
-                                            "ResourceGroupReuse",
-                                            "SubscriptionReuse",
-                                            "TenantReuse"
-                                          ],
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
-                                          }
-                                        },
-                                        "fqdn": {
-                                          "type": "string",
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone."
-                                          }
-                                        },
-                                        "reverseFqdn": {
-                                          "type": "string",
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN."
-                                          }
-                                        }
-                                      },
-                                      "metadata": {
-                                        "__bicep_export!": true
-                                      }
-                                    },
-                                    "ddosSettingsType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "ddosProtectionPlan": {
-                                          "type": "object",
-                                          "properties": {
-                                            "id": {
-                                              "type": "string",
-                                              "metadata": {
-                                                "description": "Required. The resource ID of the DDOS protection plan associated with the public IP address."
-                                              }
-                                            }
-                                          },
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The DDoS protection plan associated with the public IP address."
-                                          }
-                                        },
-                                        "protectionMode": {
-                                          "type": "string",
-                                          "allowedValues": [
-                                            "Enabled"
-                                          ],
-                                          "metadata": {
-                                            "description": "Required. The DDoS protection policy customizations."
-                                          }
-                                        }
-                                      },
-                                      "metadata": {
-                                        "__bicep_export!": true
-                                      }
-                                    },
-                                    "ipTagType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "ipTagType": {
-                                          "type": "string",
-                                          "metadata": {
-                                            "description": "Required. The IP tag type."
-                                          }
-                                        },
-                                        "tag": {
-                                          "type": "string",
-                                          "metadata": {
-                                            "description": "Required. The IP tag."
-                                          }
-                                        }
-                                      },
-                                      "metadata": {
-                                        "__bicep_export!": true
-                                      }
-                                    },
                                     "diagnosticSettingFullType": {
                                       "type": "object",
                                       "properties": {
@@ -8060,7 +8008,7 @@
                                       "metadata": {
                                         "description": "An AVM-aligned type for a diagnostic setting. To be used if both logs & metrics are supported by the resource provider.",
                                         "__bicep_imported_from!": {
-                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                         }
                                       }
                                     },
@@ -8097,7 +8045,7 @@
                                       "metadata": {
                                         "description": "An AVM-aligned type for a lock.",
                                         "__bicep_imported_from!": {
-                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.0"
+                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                         }
                                       }
                                     },
@@ -8172,7 +8120,7 @@
                                       "metadata": {
                                         "description": "An AVM-aligned type for a role assignment.",
                                         "__bicep_imported_from!": {
-                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                         }
                                       }
                                     }
@@ -8193,14 +8141,13 @@
                                     },
                                     "publicIPAllocationMethod": {
                                       "type": "string",
-                                      "defaultValue": "Static",
-                                      "allowedValues": [
-                                        "Dynamic",
-                                        "Static"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/publicIPAllocationMethod"
+                                        },
                                         "description": "Optional. The public IP address allocation method."
-                                      }
+                                      },
+                                      "defaultValue": "Static"
                                     },
                                     "availabilityZones": {
                                       "type": "array",
@@ -8223,31 +8170,33 @@
                                     },
                                     "publicIPAddressVersion": {
                                       "type": "string",
-                                      "defaultValue": "IPv4",
-                                      "allowedValues": [
-                                        "IPv4",
-                                        "IPv6"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/publicIPAddressVersion"
+                                        },
                                         "description": "Optional. IP address version."
-                                      }
+                                      },
+                                      "defaultValue": "IPv4"
                                     },
                                     "dnsSettings": {
-                                      "$ref": "#/definitions/dnsSettingsType",
-                                      "nullable": true,
+                                      "type": "object",
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/dnsSettings"
+                                        },
                                         "description": "Optional. The DNS settings of the public IP address."
-                                      }
+                                      },
+                                      "nullable": true
                                     },
                                     "ipTags": {
                                       "type": "array",
-                                      "items": {
-                                        "$ref": "#/definitions/ipTagType"
-                                      },
-                                      "nullable": true,
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/ipTags"
+                                        },
                                         "description": "Optional. The list of tags associated with the public IP address."
-                                      }
+                                      },
+                                      "nullable": true
                                     },
                                     "lock": {
                                       "$ref": "#/definitions/lockType",
@@ -8258,32 +8207,43 @@
                                     },
                                     "skuName": {
                                       "type": "string",
-                                      "defaultValue": "Standard",
-                                      "allowedValues": [
-                                        "Basic",
-                                        "Standard"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/sku/properties/name"
+                                        },
                                         "description": "Optional. Name of a public IP address SKU."
-                                      }
+                                      },
+                                      "defaultValue": "Standard"
                                     },
                                     "skuTier": {
                                       "type": "string",
-                                      "defaultValue": "Regional",
-                                      "allowedValues": [
-                                        "Global",
-                                        "Regional"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/sku/properties/tier"
+                                        },
                                         "description": "Optional. Tier of a public IP address SKU."
-                                      }
+                                      },
+                                      "defaultValue": "Regional"
                                     },
                                     "ddosSettings": {
-                                      "$ref": "#/definitions/ddosSettingsType",
-                                      "nullable": true,
+                                      "type": "object",
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/ddosSettings"
+                                        },
                                         "description": "Optional. The DDoS protection plan configuration associated with the public IP address."
-                                      }
+                                      },
+                                      "nullable": true
+                                    },
+                                    "deleteOption": {
+                                      "type": "string",
+                                      "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/deleteOption"
+                                        },
+                                        "description": "Optional. The delete option for the public IP address."
+                                      },
+                                      "nullable": true
                                     },
                                     "location": {
                                       "type": "string",
@@ -8320,7 +8280,7 @@
                                       "type": "object",
                                       "metadata": {
                                         "__bicep_resource_derived_type!": {
-                                          "source": "Microsoft.Network/publicIPAddresses@2024-10-01#properties/tags"
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/tags"
                                         },
                                         "description": "Optional. Tags of the resource."
                                       },
@@ -8363,7 +8323,7 @@
                                       "condition": "[parameters('enableTelemetry')]",
                                       "type": "Microsoft.Resources/deployments",
                                       "apiVersion": "2024-03-01",
-                                      "name": "[format('46d3xbcp.res.network-publicipaddress.{0}.{1}', replace('0.9.1', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+                                      "name": "[format('46d3xbcp.res.network-publicipaddress.{0}.{1}', replace('0.12.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
                                       "properties": {
                                         "mode": "Incremental",
                                         "template": {
@@ -8381,7 +8341,7 @@
                                     },
                                     "publicIpAddress": {
                                       "type": "Microsoft.Network/publicIPAddresses",
-                                      "apiVersion": "2024-05-01",
+                                      "apiVersion": "2025-01-01",
                                       "name": "[parameters('name')]",
                                       "location": "[parameters('location')]",
                                       "tags": "[parameters('tags')]",
@@ -8397,7 +8357,8 @@
                                         "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                                         "publicIPPrefix": "[if(not(empty(parameters('publicIpPrefixResourceId'))), createObject('id', parameters('publicIpPrefixResourceId')), null())]",
                                         "idleTimeoutInMinutes": "[parameters('idleTimeoutInMinutes')]",
-                                        "ipTags": "[parameters('ipTags')]"
+                                        "ipTags": "[parameters('ipTags')]",
+                                        "deleteOption": "[parameters('deleteOption')]"
                                       }
                                     },
                                     "publicIpAddress_lock": {
@@ -8512,7 +8473,7 @@
                                       "metadata": {
                                         "description": "The location the resource was deployed into."
                                       },
-                                      "value": "[reference('publicIpAddress', '2024-05-01', 'full').location]"
+                                      "value": "[reference('publicIpAddress', '2025-01-01', 'full').location]"
                                     }
                                   }
                                 }
@@ -9646,7 +9607,7 @@
                             "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'enableAutomaticUpgrade'), false())]"
                           },
                           "settings": {
-                            "value": "[parameters('extensionDomainJoinConfig').settings]"
+                            "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'settings'), createObject('Name', tryGet(parameters('extensionDomainJoinConfig'), 'domainName'), 'OUPath', tryGet(parameters('extensionDomainJoinConfig'), 'ouPath'), 'User', tryGet(parameters('extensionDomainJoinConfig'), 'user'), 'Restart', tryGet(parameters('extensionDomainJoinConfig'), 'restart'), 'Options', tryGet(parameters('extensionDomainJoinConfig'), 'options')))]"
                           },
                           "supressFailures": {
                             "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'supressFailures'), false())]"
@@ -9667,8 +9628,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -9879,9 +9840,7 @@
                           "enableAutomaticUpgrade": {
                             "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'enableAutomaticUpgrade'), false())]"
                           },
-                          "settings": {
-                            "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'settings'), createObject())]"
-                          },
+                          "settings": "[if(not(empty(variables('filteredAadJoinSettings'))), createObject('value', variables('filteredAadJoinSettings')), createObject('value', null()))]",
                           "supressFailures": {
                             "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'supressFailures'), false())]"
                           },
@@ -9896,8 +9855,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -10128,8 +10087,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -10341,6 +10300,9 @@
                           "enableAutomaticUpgrade": {
                             "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'enableAutomaticUpgrade'), false())]"
                           },
+                          "settings": {
+                            "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'settings'), createObject())]"
+                          },
                           "supressFailures": {
                             "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'supressFailures'), false())]"
                           },
@@ -10355,8 +10317,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -10587,8 +10549,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -10814,8 +10776,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -11049,8 +11011,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -11289,8 +11251,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -11466,8 +11428,7 @@
                       },
                       "dependsOn": [
                         "cseIdentity",
-                        "vm",
-                        "vm_desiredStateConfigurationExtension"
+                        "vm"
                       ]
                     },
                     "vm_azureDiskEncryptionExtension": {
@@ -11523,8 +11484,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -11752,8 +11713,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -11973,11 +11934,19 @@
                               "configurationFunction": "[parameters('extensionHostPoolRegistration').configurationFunction]",
                               "properties": {
                                 "hostPoolName": "[parameters('extensionHostPoolRegistration').hostPoolName]",
-                                "registrationInfoToken": "[parameters('extensionHostPoolRegistration').registrationInfoToken]",
                                 "aadJoin": true
-                              },
-                              "supressFailures": "[coalesce(tryGet(parameters('extensionHostPoolRegistration'), 'supressFailures'), false())]"
+                              }
                             }
+                          },
+                          "protectedSettings": {
+                            "value": {
+                              "properties": {
+                                "registrationInfoToken": "[parameters('extensionHostPoolRegistration').registrationInfoToken]"
+                              }
+                            }
+                          },
+                          "supressFailures": {
+                            "value": "[coalesce(tryGet(parameters('extensionHostPoolRegistration'), 'supressFailures'), false())]"
                           },
                           "tags": {
                             "value": "[coalesce(tryGet(parameters('extensionHostPoolRegistration'), 'tags'), parameters('tags'))]"
@@ -11990,8 +11959,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -12224,8 +12193,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -12444,8 +12413,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "3866626825190424174"
+                              "version": "0.41.2.15936",
+                              "templateHash": "17448691641471706096"
                             },
                             "name": "Recovery Service Vaults Protection Container Protected Item",
                             "description": "This module deploys a Recovery Services Vault Protection Container Protected Item."
@@ -12705,7 +12674,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.42.1.51946",
-              "templateHash": "3160452397084943087"
+              "templateHash": "13437101254109127807"
             }
           },
           "parameters": {
@@ -12957,8 +12926,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.39.26.7824",
-                      "templateHash": "11442373542874951910"
+                      "version": "0.41.2.15936",
+                      "templateHash": "17174537341033050778"
                     },
                     "name": "Virtual Machines",
                     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs."
@@ -13992,7 +13961,7 @@
                           "type": "object",
                           "properties": {
                             "backendAddressPool": {
-                              "$ref": "#/definitions/subResourceType",
+                              "$ref": "#/definitions/_1.subResourceType",
                               "nullable": true,
                               "metadata": {
                                 "description": "Optional. A reference to backendAddressPool resource."
@@ -14020,7 +13989,7 @@
                               }
                             },
                             "frontendIPConfiguration": {
-                              "$ref": "#/definitions/subResourceType",
+                              "$ref": "#/definitions/_1.subResourceType",
                               "nullable": true,
                               "metadata": {
                                 "description": "Optional. A reference to frontend IP addresses."
@@ -14068,6 +14037,24 @@
                       },
                       "metadata": {
                         "description": "The type for the inbound NAT rule.",
+                        "__bicep_imported_from!": {
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
+                        }
+                      }
+                    },
+                    "_1.subResourceType": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "nullable": true,
+                          "metadata": {
+                            "description": "Optional. Resource ID of the sub resource."
+                          }
+                        }
+                      },
+                      "metadata": {
+                        "description": "The type for the sub resource.",
                         "__bicep_imported_from!": {
                           "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
                         }
@@ -14740,7 +14727,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a diagnostic setting. To be used if both logs & metrics are supported by the resource provider.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -14809,7 +14796,7 @@
                           }
                         },
                         "gatewayLoadBalancer": {
-                          "$ref": "#/definitions/subResourceType",
+                          "$ref": "#/definitions/_1.subResourceType",
                           "nullable": true,
                           "metadata": {
                             "description": "Optional. The gateway load balancer settings."
@@ -14921,7 +14908,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a lock.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.0"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -14949,7 +14936,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a managed identity configuration. To be used if both a system-assigned & user-assigned identities are supported by the resource provider.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -14978,8 +14965,9 @@
                         }
                       },
                       "metadata": {
+                        "description": "The type for the network interface IP configuration output.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.3"
                         }
                       }
                     },
@@ -15054,7 +15042,7 @@
                       "metadata": {
                         "description": "An AVM-aligned type for a role assignment.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.7.0"
                         }
                       }
                     },
@@ -15072,7 +15060,7 @@
                       "metadata": {
                         "description": "The type for the sub resource.",
                         "__bicep_imported_from!": {
-                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.1"
+                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/res/network/network-interface:0.5.3"
                         }
                       }
                     }
@@ -15129,11 +15117,14 @@
                       }
                     },
                     "imageReference": {
-                      "$ref": "#/definitions/imageReferenceType",
-                      "nullable": true,
+                      "type": "object",
                       "metadata": {
+                        "__bicep_resource_derived_type!": {
+                          "source": "Microsoft.Compute/virtualMachines@2025-04-01#properties/properties/properties/storageProfile/properties/imageReference"
+                        },
                         "description": "Conditional. OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. Required if not creating the VM from an existing os-disk via the `osDisk.managedDisk.resourceId` parameter."
-                      }
+                      },
+                      "nullable": true
                     },
                     "plan": {
                       "$ref": "#/definitions/planType",
@@ -15769,14 +15760,16 @@
                       "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
                       "Virtual Machine User Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')]",
                       "VM Scanner Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'd24ecba3-c1f4-40fa-a7bb-4588a071e8fd')]"
-                    }
+                    },
+                    "aadJoinSettings": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'settings'), createObject())]",
+                    "filteredAadJoinSettings": "[if(and(contains(variables('aadJoinSettings'), 'mdmId'), empty(variables('aadJoinSettings').mdmId)), reduce(items(variables('aadJoinSettings')), createObject(), lambda('cur', 'item', if(equals(lambdaVariables('item').key, 'mdmId'), lambdaVariables('cur'), union(lambdaVariables('cur'), createObject(format('{0}', lambdaVariables('item').key), lambdaVariables('item').value))))), variables('aadJoinSettings'))]"
                   },
                   "resources": {
                     "avmTelemetry": {
                       "condition": "[parameters('enableTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2024-03-01",
-                      "name": "[format('46d3xbcp.res.compute-virtualmachine.{0}.{1}', replace('0.21.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+                      "apiVersion": "2024-07-01",
+                      "name": "[format('46d3xbcp.res.compute-virtualmachine.{0}.{1}', replace('0.22.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
                       "properties": {
                         "mode": "Incremental",
                         "template": {
@@ -15797,9 +15790,9 @@
                         "name": "managedDataDisks",
                         "count": "[length(coalesce(parameters('dataDisks'), createArray()))]"
                       },
-                      "condition": "[empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'resourceId'))]",
+                      "condition": "[and(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'resourceId')), not(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'createOption'), 'Empty'), 'FromImage')))]",
                       "type": "Microsoft.Compute/disks",
-                      "apiVersion": "2024-03-02",
+                      "apiVersion": "2025-01-02",
                       "name": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex(), 1), 2, '0')))]",
                       "location": "[parameters('location')]",
                       "sku": {
@@ -15808,14 +15801,14 @@
                       "properties": {
                         "diskSizeGB": "[tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'diskSizeGB')]",
                         "creationData": {
-                          "createOption": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'createoption'), 'Empty')]"
+                          "createOption": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'createOption'), 'Empty')]"
                         },
                         "diskIOPSReadWrite": "[tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'diskIOPSReadWrite')]",
                         "diskMBpsReadWrite": "[tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'diskMBpsReadWrite')]",
                         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
                         "networkAccessPolicy": "[parameters('networkAccessPolicy')]"
                       },
-                      "zones": "[if(and(not(equals(parameters('availabilityZone'), -1)), not(contains(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'storageAccountType'), 'ZRS'))), array(string(parameters('availabilityZone'))), null())]",
+                      "zones": "[if(and(not(equals(parameters('availabilityZone'), -1)), not(contains(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()].managedDisk, 'storageAccountType'), ''), 'ZRS'))), array(string(parameters('availabilityZone'))), null())]",
                       "tags": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex()], 'tags'), parameters('tags'))]"
                     },
                     "vm": {
@@ -15840,13 +15833,11 @@
                               "input": {
                                 "lun": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'lun'), copyIndex('dataDisks'))]",
                                 "name": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'))), last(split(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.resourceId, '/')), coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0'))))]",
-                                "createOption": "[if(or(not(equals(if(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null()), null())), not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')))), 'Attach', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createoption'), 'Empty'))]",
+                                "createOption": "[if(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'), 'FromImage', if(or(not(equals(if(and(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), not(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'))), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null()), null())), not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')))), 'Attach', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty')))]",
                                 "deleteOption": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'))), 'Detach', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'deleteOption'), 'Delete'))]",
                                 "caching": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'))), 'None', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'caching'), 'ReadOnly'))]",
-                                "managedDisk": {
-                                  "id": "[coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'), if(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null()))]",
-                                  "diskEncryptionSet": "[if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'diskEncryptionSetResourceId'))), createObject('id', coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.diskEncryptionSetResourceId), null())]"
-                                }
+                                "diskSizeGB": "[if(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'), null(), tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'diskSizeGB'))]",
+                                "managedDisk": "[if(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'), createObject('storageAccountType', tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'storageAccountType'), 'diskEncryptionSet', if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'diskEncryptionSetResourceId'))), createObject('id', coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.diskEncryptionSetResourceId), null())), createObject('id', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId'), if(and(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'resourceId')), not(equals(coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'createOption'), 'Empty'), 'FromImage'))), resourceId('Microsoft.Compute/disks', coalesce(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')], 'name'), format('{0}-disk-data-{1}', parameters('name'), padLeft(add(copyIndex('dataDisks'), 1), 2, '0')))), null())), 'diskEncryptionSet', if(not(empty(tryGet(coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk, 'diskEncryptionSetResourceId'))), createObject('id', coalesce(parameters('dataDisks'), createArray())[copyIndex('dataDisks')].managedDisk.diskEncryptionSetResourceId), null())))]"
                               }
                             }
                           ],
@@ -15913,7 +15904,7 @@
                       "condition": "[not(empty(parameters('maintenanceConfigurationResourceId')))]",
                       "type": "Microsoft.Maintenance/configurationAssignments",
                       "apiVersion": "2023-04-01",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[format('{0}assignment', parameters('name'))]",
                       "location": "[parameters('location')]",
                       "properties": {
@@ -15928,7 +15919,7 @@
                       "condition": "[not(empty(parameters('configurationProfile')))]",
                       "type": "Microsoft.Automanage/configurationProfileAssignments",
                       "apiVersion": "2022-05-04",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "default",
                       "properties": {
                         "configurationProfile": "[parameters('configurationProfile')]"
@@ -15943,6 +15934,7 @@
                       "apiVersion": "2018-09-15",
                       "name": "[format('shutdown-computevm-{0}', parameters('name'))]",
                       "location": "[parameters('location')]",
+                      "tags": "[coalesce(tryGet(parameters('autoShutdownConfig'), 'tags'), parameters('tags'))]",
                       "properties": {
                         "status": "[coalesce(tryGet(parameters('autoShutdownConfig'), 'status'), 'Disabled')]",
                         "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
@@ -15965,7 +15957,7 @@
                       "condition": "[parameters('extensionMonitoringAgentConfig').enabled]",
                       "type": "Microsoft.Insights/dataCollectionRuleAssociations",
                       "apiVersion": "2024-03-11",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[parameters('extensionMonitoringAgentConfig').dataCollectionRuleAssociations[copyIndex()].name]",
                       "properties": {
                         "dataCollectionRuleId": "[parameters('extensionMonitoringAgentConfig').dataCollectionRuleAssociations[copyIndex()].dataCollectionRuleResourceId]"
@@ -15988,7 +15980,7 @@
                       "condition": "[not(empty(parameters('guestConfiguration')))]",
                       "type": "Microsoft.GuestConfiguration/guestConfigurationAssignments",
                       "apiVersion": "2024-04-05",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[coalesce(tryGet(parameters('guestConfiguration'), 'name'), 'AzureWindowsBaseline')]",
                       "location": "[parameters('location')]",
                       "properties": {
@@ -16003,7 +15995,7 @@
                       "condition": "[and(not(empty(coalesce(parameters('lock'), createObject()))), not(equals(tryGet(parameters('lock'), 'kind'), 'None')))]",
                       "type": "Microsoft.Authorization/locks",
                       "apiVersion": "2020-05-01",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[coalesce(tryGet(parameters('lock'), 'name'), format('lock-{0}', parameters('name')))]",
                       "properties": {
                         "level": "[coalesce(tryGet(parameters('lock'), 'kind'), '')]",
@@ -16020,7 +16012,7 @@
                       },
                       "type": "Microsoft.Authorization/roleAssignments",
                       "apiVersion": "2022-04-01",
-                      "scope": "[format('Microsoft.Compute/virtualMachines/{0}', parameters('name'))]",
+                      "scope": "[resourceId('Microsoft.Compute/virtualMachines', parameters('name'))]",
                       "name": "[coalesce(tryGet(coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()], 'name'), guid(resourceId('Microsoft.Compute/virtualMachines', parameters('name')), coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].principalId, coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId))]",
                       "properties": {
                         "roleDefinitionId": "[coalesce(variables('formattedRoleAssignments'), createArray())[copyIndex()].roleDefinitionId]",
@@ -16094,8 +16086,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "716745708639313461"
+                              "version": "0.41.2.15936",
+                              "templateHash": "5982155361487304817"
                             }
                           },
                           "definitions": {
@@ -17227,106 +17219,13 @@
                                   "metadata": {
                                     "_generator": {
                                       "name": "bicep",
-                                      "version": "0.38.5.1644",
-                                      "templateHash": "7550528442771433353"
+                                      "version": "0.39.26.7824",
+                                      "templateHash": "5349747633189946992"
                                     },
                                     "name": "Public IP Addresses",
                                     "description": "This module deploys a Public IP Address."
                                   },
                                   "definitions": {
-                                    "dnsSettingsType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "domainNameLabel": {
-                                          "type": "string",
-                                          "metadata": {
-                                            "description": "Required. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system."
-                                          }
-                                        },
-                                        "domainNameLabelScope": {
-                                          "type": "string",
-                                          "allowedValues": [
-                                            "NoReuse",
-                                            "ResourceGroupReuse",
-                                            "SubscriptionReuse",
-                                            "TenantReuse"
-                                          ],
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The domain name label scope. If a domain name label and a domain name label scope are specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN."
-                                          }
-                                        },
-                                        "fqdn": {
-                                          "type": "string",
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone."
-                                          }
-                                        },
-                                        "reverseFqdn": {
-                                          "type": "string",
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN."
-                                          }
-                                        }
-                                      },
-                                      "metadata": {
-                                        "__bicep_export!": true
-                                      }
-                                    },
-                                    "ddosSettingsType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "ddosProtectionPlan": {
-                                          "type": "object",
-                                          "properties": {
-                                            "id": {
-                                              "type": "string",
-                                              "metadata": {
-                                                "description": "Required. The resource ID of the DDOS protection plan associated with the public IP address."
-                                              }
-                                            }
-                                          },
-                                          "nullable": true,
-                                          "metadata": {
-                                            "description": "Optional. The DDoS protection plan associated with the public IP address."
-                                          }
-                                        },
-                                        "protectionMode": {
-                                          "type": "string",
-                                          "allowedValues": [
-                                            "Enabled"
-                                          ],
-                                          "metadata": {
-                                            "description": "Required. The DDoS protection policy customizations."
-                                          }
-                                        }
-                                      },
-                                      "metadata": {
-                                        "__bicep_export!": true
-                                      }
-                                    },
-                                    "ipTagType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "ipTagType": {
-                                          "type": "string",
-                                          "metadata": {
-                                            "description": "Required. The IP tag type."
-                                          }
-                                        },
-                                        "tag": {
-                                          "type": "string",
-                                          "metadata": {
-                                            "description": "Required. The IP tag."
-                                          }
-                                        }
-                                      },
-                                      "metadata": {
-                                        "__bicep_export!": true
-                                      }
-                                    },
                                     "diagnosticSettingFullType": {
                                       "type": "object",
                                       "properties": {
@@ -17445,7 +17344,7 @@
                                       "metadata": {
                                         "description": "An AVM-aligned type for a diagnostic setting. To be used if both logs & metrics are supported by the resource provider.",
                                         "__bicep_imported_from!": {
-                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                         }
                                       }
                                     },
@@ -17482,7 +17381,7 @@
                                       "metadata": {
                                         "description": "An AVM-aligned type for a lock.",
                                         "__bicep_imported_from!": {
-                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.0"
+                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                         }
                                       }
                                     },
@@ -17557,7 +17456,7 @@
                                       "metadata": {
                                         "description": "An AVM-aligned type for a role assignment.",
                                         "__bicep_imported_from!": {
-                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.2.1"
+                                          "sourceTemplate": "br:mcr.microsoft.com/bicep/avm/utl/types/avm-common-types:0.6.1"
                                         }
                                       }
                                     }
@@ -17578,14 +17477,13 @@
                                     },
                                     "publicIPAllocationMethod": {
                                       "type": "string",
-                                      "defaultValue": "Static",
-                                      "allowedValues": [
-                                        "Dynamic",
-                                        "Static"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/publicIPAllocationMethod"
+                                        },
                                         "description": "Optional. The public IP address allocation method."
-                                      }
+                                      },
+                                      "defaultValue": "Static"
                                     },
                                     "availabilityZones": {
                                       "type": "array",
@@ -17608,31 +17506,33 @@
                                     },
                                     "publicIPAddressVersion": {
                                       "type": "string",
-                                      "defaultValue": "IPv4",
-                                      "allowedValues": [
-                                        "IPv4",
-                                        "IPv6"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/publicIPAddressVersion"
+                                        },
                                         "description": "Optional. IP address version."
-                                      }
+                                      },
+                                      "defaultValue": "IPv4"
                                     },
                                     "dnsSettings": {
-                                      "$ref": "#/definitions/dnsSettingsType",
-                                      "nullable": true,
+                                      "type": "object",
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/dnsSettings"
+                                        },
                                         "description": "Optional. The DNS settings of the public IP address."
-                                      }
+                                      },
+                                      "nullable": true
                                     },
                                     "ipTags": {
                                       "type": "array",
-                                      "items": {
-                                        "$ref": "#/definitions/ipTagType"
-                                      },
-                                      "nullable": true,
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/ipTags"
+                                        },
                                         "description": "Optional. The list of tags associated with the public IP address."
-                                      }
+                                      },
+                                      "nullable": true
                                     },
                                     "lock": {
                                       "$ref": "#/definitions/lockType",
@@ -17643,32 +17543,43 @@
                                     },
                                     "skuName": {
                                       "type": "string",
-                                      "defaultValue": "Standard",
-                                      "allowedValues": [
-                                        "Basic",
-                                        "Standard"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/sku/properties/name"
+                                        },
                                         "description": "Optional. Name of a public IP address SKU."
-                                      }
+                                      },
+                                      "defaultValue": "Standard"
                                     },
                                     "skuTier": {
                                       "type": "string",
-                                      "defaultValue": "Regional",
-                                      "allowedValues": [
-                                        "Global",
-                                        "Regional"
-                                      ],
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/sku/properties/tier"
+                                        },
                                         "description": "Optional. Tier of a public IP address SKU."
-                                      }
+                                      },
+                                      "defaultValue": "Regional"
                                     },
                                     "ddosSettings": {
-                                      "$ref": "#/definitions/ddosSettingsType",
-                                      "nullable": true,
+                                      "type": "object",
                                       "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/ddosSettings"
+                                        },
                                         "description": "Optional. The DDoS protection plan configuration associated with the public IP address."
-                                      }
+                                      },
+                                      "nullable": true
+                                    },
+                                    "deleteOption": {
+                                      "type": "string",
+                                      "metadata": {
+                                        "__bicep_resource_derived_type!": {
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/properties/properties/deleteOption"
+                                        },
+                                        "description": "Optional. The delete option for the public IP address."
+                                      },
+                                      "nullable": true
                                     },
                                     "location": {
                                       "type": "string",
@@ -17705,7 +17616,7 @@
                                       "type": "object",
                                       "metadata": {
                                         "__bicep_resource_derived_type!": {
-                                          "source": "Microsoft.Network/publicIPAddresses@2024-10-01#properties/tags"
+                                          "source": "Microsoft.Network/publicIPAddresses@2025-01-01#properties/tags"
                                         },
                                         "description": "Optional. Tags of the resource."
                                       },
@@ -17748,7 +17659,7 @@
                                       "condition": "[parameters('enableTelemetry')]",
                                       "type": "Microsoft.Resources/deployments",
                                       "apiVersion": "2024-03-01",
-                                      "name": "[format('46d3xbcp.res.network-publicipaddress.{0}.{1}', replace('0.9.1', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+                                      "name": "[format('46d3xbcp.res.network-publicipaddress.{0}.{1}', replace('0.12.0', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
                                       "properties": {
                                         "mode": "Incremental",
                                         "template": {
@@ -17766,7 +17677,7 @@
                                     },
                                     "publicIpAddress": {
                                       "type": "Microsoft.Network/publicIPAddresses",
-                                      "apiVersion": "2024-05-01",
+                                      "apiVersion": "2025-01-01",
                                       "name": "[parameters('name')]",
                                       "location": "[parameters('location')]",
                                       "tags": "[parameters('tags')]",
@@ -17782,7 +17693,8 @@
                                         "publicIPAllocationMethod": "[parameters('publicIPAllocationMethod')]",
                                         "publicIPPrefix": "[if(not(empty(parameters('publicIpPrefixResourceId'))), createObject('id', parameters('publicIpPrefixResourceId')), null())]",
                                         "idleTimeoutInMinutes": "[parameters('idleTimeoutInMinutes')]",
-                                        "ipTags": "[parameters('ipTags')]"
+                                        "ipTags": "[parameters('ipTags')]",
+                                        "deleteOption": "[parameters('deleteOption')]"
                                       }
                                     },
                                     "publicIpAddress_lock": {
@@ -17897,7 +17809,7 @@
                                       "metadata": {
                                         "description": "The location the resource was deployed into."
                                       },
-                                      "value": "[reference('publicIpAddress', '2024-05-01', 'full').location]"
+                                      "value": "[reference('publicIpAddress', '2025-01-01', 'full').location]"
                                     }
                                   }
                                 }
@@ -19031,7 +18943,7 @@
                             "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'enableAutomaticUpgrade'), false())]"
                           },
                           "settings": {
-                            "value": "[parameters('extensionDomainJoinConfig').settings]"
+                            "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'settings'), createObject('Name', tryGet(parameters('extensionDomainJoinConfig'), 'domainName'), 'OUPath', tryGet(parameters('extensionDomainJoinConfig'), 'ouPath'), 'User', tryGet(parameters('extensionDomainJoinConfig'), 'user'), 'Restart', tryGet(parameters('extensionDomainJoinConfig'), 'restart'), 'Options', tryGet(parameters('extensionDomainJoinConfig'), 'options')))]"
                           },
                           "supressFailures": {
                             "value": "[coalesce(tryGet(parameters('extensionDomainJoinConfig'), 'supressFailures'), false())]"
@@ -19052,8 +18964,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -19264,9 +19176,7 @@
                           "enableAutomaticUpgrade": {
                             "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'enableAutomaticUpgrade'), false())]"
                           },
-                          "settings": {
-                            "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'settings'), createObject())]"
-                          },
+                          "settings": "[if(not(empty(variables('filteredAadJoinSettings'))), createObject('value', variables('filteredAadJoinSettings')), createObject('value', null()))]",
                           "supressFailures": {
                             "value": "[coalesce(tryGet(parameters('extensionAadJoinConfig'), 'supressFailures'), false())]"
                           },
@@ -19281,8 +19191,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -19513,8 +19423,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -19726,6 +19636,9 @@
                           "enableAutomaticUpgrade": {
                             "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'enableAutomaticUpgrade'), false())]"
                           },
+                          "settings": {
+                            "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'settings'), createObject())]"
+                          },
                           "supressFailures": {
                             "value": "[coalesce(tryGet(parameters('extensionMonitoringAgentConfig'), 'supressFailures'), false())]"
                           },
@@ -19740,8 +19653,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -19972,8 +19885,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -20199,8 +20112,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -20434,8 +20347,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -20674,8 +20587,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -20851,8 +20764,7 @@
                       },
                       "dependsOn": [
                         "cseIdentity",
-                        "vm",
-                        "vm_desiredStateConfigurationExtension"
+                        "vm"
                       ]
                     },
                     "vm_azureDiskEncryptionExtension": {
@@ -20908,8 +20820,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -21137,8 +21049,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -21358,11 +21270,19 @@
                               "configurationFunction": "[parameters('extensionHostPoolRegistration').configurationFunction]",
                               "properties": {
                                 "hostPoolName": "[parameters('extensionHostPoolRegistration').hostPoolName]",
-                                "registrationInfoToken": "[parameters('extensionHostPoolRegistration').registrationInfoToken]",
                                 "aadJoin": true
-                              },
-                              "supressFailures": "[coalesce(tryGet(parameters('extensionHostPoolRegistration'), 'supressFailures'), false())]"
+                              }
                             }
+                          },
+                          "protectedSettings": {
+                            "value": {
+                              "properties": {
+                                "registrationInfoToken": "[parameters('extensionHostPoolRegistration').registrationInfoToken]"
+                              }
+                            }
+                          },
+                          "supressFailures": {
+                            "value": "[coalesce(tryGet(parameters('extensionHostPoolRegistration'), 'supressFailures'), false())]"
                           },
                           "tags": {
                             "value": "[coalesce(tryGet(parameters('extensionHostPoolRegistration'), 'tags'), parameters('tags'))]"
@@ -21375,8 +21295,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -21609,8 +21529,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "8391598897118491777"
+                              "version": "0.41.2.15936",
+                              "templateHash": "3581830278162851734"
                             },
                             "name": "Virtual Machine Extensions",
                             "description": "This module deploys a Virtual Machine Extension."
@@ -21829,8 +21749,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.39.26.7824",
-                              "templateHash": "3866626825190424174"
+                              "version": "0.41.2.15936",
+                              "templateHash": "17448691641471706096"
                             },
                             "name": "Recovery Service Vaults Protection Container Protected Item",
                             "description": "This module deploys a Recovery Services Vault Protection Container Protected Item."
