@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- Added parameter `customSharePointConfiguration`
+
+### Changed
+
+- **BREAKING CHANGE**: Renamed and removed parameter `enableAzureBastion` to `addBastion`
+
 ## Enhancements & bug-fixes - Published in April 15, 2026
 
 ### Changed

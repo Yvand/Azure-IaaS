@@ -29,7 +29,7 @@ param sharePointVersion string = 'Subscription-Latest'
   'Medium'
   'Full'
 ])
-param sharePointConfigurationLevel string = 'Light'
+param sharePointConfigurationLevel string = 'Medium'
 
 @description('Configuration to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to "Custom".')
 @allowed([
@@ -40,6 +40,8 @@ param sharePointConfigurationLevel string = 'Light'
   'Addins'
   'AdditionalSiteCollections'
   'StateService'
+  'ProjectServer'
+  'Search'
 ])
 param customSharePointConfiguration array = ['']
 
@@ -102,7 +104,7 @@ param outboundAccessMethod string = 'PublicIPAddress'
 param addNameToPublicIpAddresses string = 'SharePointVMsOnly'
 
 @description('Specify if Azure Bastion Developer should be provisioned. See https://go.microsoft.com/fwlink/?linkid=2249215 for more information.')
-param enableAzureBastion bool = false
+param addBastion bool = false
 
 @description('Enable the Azure Hybrid Benefit on virtual machines, to use your on-premises Windows Server licenses and reduce cost. See https://docs.microsoft.com/en-us/azure/virtual-machines/windows/hybrid-use-benefit-licensing for more information.')
 param enableHybridBenefitServerLicenses bool = false
@@ -891,7 +893,7 @@ module frontends 'virtualMachine.bicep' = [
   }
 ]
 
-module bastion 'bastion.bicep' = if (enableAzureBastion == true) {
+module bastion 'bastion.bicep' = if (addBastion == true) {
   name: 'bastion-module'
   params: {
     virtualNetworkName: virtualNetwork.outputs.vnetName
