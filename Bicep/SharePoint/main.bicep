@@ -306,7 +306,7 @@ param vmSharePointStorage string = 'StandardSSD_LRS'
 
 @description('The base URI where artifacts required by this template are located.')
  //param _artifactsLocation string = uri(deployment().properties.templateLink.uri, 'dsc/')
-param _artifactsLocation string = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.3.0/'
+param _artifactsLocation string = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v3.1.1/'
 
 @secure()
 @description('The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured.')
@@ -414,7 +414,7 @@ var sharePointSettings = {
       Label: 'SPLatest'
       Packages: [
         {
-          DownloadUrl: 'https://download.microsoft.com/download/f839c57c-7b4e-4213-b03b-2c1508e13588/uber-subscription-kb5002853-fullfile-x64-glb.exe'
+          DownloadUrl: 'https://download.microsoft.com/download/7b4c3ae5-ce9d-4f5d-8e30-cefd28c92c3e/uber-subscription-kb5002873-fullfile-x64-glb.exe'
         }
       ]
     }

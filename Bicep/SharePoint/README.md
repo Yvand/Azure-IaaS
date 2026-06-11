@@ -41,7 +41,7 @@ About SharePoint legacy: SharePoint 2016 / 2019 use outdated images ([2016](http
 ## SharePoint configuration
 
 - Parameter `sharePointVersion` sets which version of SharePoint will be installed:
-  - `Subscription-Latest` (default): SharePoint Subscription with the latest public update available at the time of publishing this version: April  2026 ([KB5002853](https://support.microsoft.com/help/5002853)).
+  - `Subscription-Latest` (default): SharePoint Subscription with the latest public update available at the time of publishing this version: June 2026 ([kb5002873](https://support.microsoft.com/help/5002873)).
   - `Subscription-25H2`: SharePoint Subscription with the [Feature Update 25H2](https://learn.microsoft.com/sharepoint/what-s-new/new-improved-features-sharepoint-server-subscription-edition-2025-h2-release) (September 2025 PU / [KB5002784](https://support.microsoft.com/help/5002784)).
   - `Subscription-25H1`: SharePoint Subscription with the [Feature Update 25H1](https://learn.microsoft.com/sharepoint/what-s-new/new-and-improved-features-in-sharepoint-server-subscription-edition-25h1-release) (March 2025 PU / [KB5002698](https://support.microsoft.com/help/5002698)).
   - `Subscription-24H2`: SharePoint Subscription with the [Feature Update 24H2](https://learn.microsoft.com/sharepoint/what-s-new/new-and-improved-features-in-sharepoint-server-subscription-edition-24h2-release) (September 2024 PU / [kb5002640](https://support.microsoft.com/help/5002640)).
@@ -111,10 +111,11 @@ You can use <https://azure.com/e/26eea69e35b04cb884b83ce06feadb5c> to estimate t
 
 ## Known issues
 
-- The password for the User Profile directory synchronization connection (parameter `otherAccountsPassword`) needs to be re-entered in the "Edit synchronization connection" page, otherwise the profile import fails (password decryption error in the logs).
-- When setting `outboundAccessMethod` to `AzureFirewallProxy`, most of the softwares installed through Chocolatey fail to download and are not installed.
+- The password for the User Profile directory synchronization connection (variable `other_accounts_password`) needs to be re-entered in the "Edit synchronization connection" page, otherwise the profile import fails (password decryption error in the logs).
+- When setting `outbound_access_method` to `AzureFirewallProxy`, most of the softwares installed through Chocolatey fail to download and are not installed.
+- When setting `sharepoint_configuration_level` to `Full` and `front_end_servers_count` > 0: the configuration wizard hangs on the additional web front ends when they join the farm.
 - The deployment of Azure Bastion fails pretty frequently. This has little impact, since it is very easy to redeploy through the portal.
-- SharePoint 2016 and 2019 are outdated and deprecated. Their corresponding DSC configurations receive little maintenance to ensure they continue to deploy, but receive no improvement. As such, parameters `sharePointConfigurationLevel` and `defaultZoneMustBeHttps` have no effect on them.
+- SharePoint 2016 and 2019 are outdated and deprecated. Their corresponding DSC configurations receive little maintenance to ensure they continue to deploy, but receive no improvement. As such, variables `sharepoint_configuration_level` and `default_zone_must_be_https` have no effect on them.
 
 ## Additional information
 
