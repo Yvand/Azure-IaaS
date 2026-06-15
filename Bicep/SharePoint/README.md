@@ -17,7 +17,7 @@ This template creates a secure, highly customizable SharePoint Subscription / 20
 
 - A highly secure, customizable environment, under your full control (you set the AD domain name, admin account name, all accounts password).
 - A SharePoint farm installed with the PU of your choice (including the latest one), and up-to-date Windows and softwares before you first log-in.
-- Eliminate the burden of doing tedious configuration: Many SharePoint features and services are configured, doing this manually would take ages.
+- A fine-grained control on the SharePoint configuration: You can easily specify what features are configured individually, or choose between 4 levels: 'Minimum', 'Light', 'Medium' (default), and 'Full'
 - Truly ready-to-use virtual machines right at the first log-in, with everything a SharePoint administrator needs.
 - A state-of-the-art configuration that showcases the best practices for a well-configured SharePoint farm.
 - A fast deployment time: A fully configured SharePoint farm installed with the latest PU takes only about 1h15 mins to be fully ready (if you think it is not so fast, compare this with the time it takes to install a SharePoint PU in your farm).
@@ -57,12 +57,14 @@ About SharePoint legacy: SharePoint 2016 / 2019 use outdated images ([2016](http
   - `Light`: Everything in `Minimum`, plus:
     - Provisions the State Service Application.
     - Configures the trusted authentication (OIDC with ADFS).
+    - Creates additional site collections (host-named and path-based).
   - `Medium`: Everything in `Light`, plus:
+    - Extends the web application to zone `Intranet`.
     - Provisions the User Profile Service Application.
-    - Extends the web application in zone `Intranet`.
-  - `Full`: Everything in `Medium`, plus:
     - Configures all the resources to run and deploy add-ins.
-    - Creates additional host-named site collections.
+  - `Full`: Everything in `Medium`, plus:
+    - Provisions Project Server.
+    - Provisions the Search Service Application.
 - Parameter `defaultZoneMustBeHttps`: `true` if the default zone must use HTTPS, `false` if it may use HTTP (if compatible with the configuration selected).
 - Parameter `frontEndServersCount` lets you add up to 4 additional SharePoint servers to the farm with the [MinRole Front-end](https://learn.microsoft.com/sharepoint/install/planning-for-a-minrole-server-deployment-in-sharepoint-server).
 
@@ -85,14 +87,15 @@ The remote access to the virtual machines depends on the following parameters:
   - if `true`: Configure service [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) with Developer SKU, to allow a secure remote access to virtual machines.
   - if `false` (default): Service [Azure Bastion](https://azure.microsoft.com/services/azure-bastion/) is not created.
 
-IMPORTANT: If you set parameter `outboundAccessMethod` to `AzureFirewallProxy`, you have to either enable Azure Bastion, or manually add a public IP address later, to be able to connect to a virtual machine.
+IMPORTANT: If you set parameter `outboundAccessMethod` to `AzureFirewallProxy`, the virtual machines do not get a public IP. To connect to a virtual machine, you will need to either assign a public IP address after deployment, or use Azure Bastion.
 
 ## Other input parameters
 
 - The resource group name is used:
   - As the name of the Azure resource group which hosts all the resources that will be created.
   - As part of the public DNS name of the virtual machines, if they get a public IP (parameter `outboundAccessMethod`), and a DNS name associated with it (parameter `addNameToPublicIpAddresses`).
-- Parameter `enableHybridBenefitServerLicenses` allows you to enable Azure Hybrid Benefit to use your on-premises Windows Server licenses and reduce cost, if you are eligible. See [this page](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) for more information..
+
+- Parameter `enableHybridBenefitServerLicenses` allows you to enable Azure Hybrid Benefit to use your on-premises Windows Server licenses and reduce cost, if you are eligible. See [this page](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) for more information.
 
 ## Outputs
 

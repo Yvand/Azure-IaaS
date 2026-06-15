@@ -9,6 +9,7 @@
 ### Changed
 
 - **BREAKING CHANGE**: Renamed and removed parameter `enableAzureBastion` to `addBastion`
+- Updated bicep modules and resources to their latest version
 
 ## Enhancements & bug-fixes - Published in April 15, 2026
 
