@@ -33,7 +33,6 @@ param sharePointConfigurationLevel string = 'Medium'
 
 @description('Configuration to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to "Custom".')
 @allowed([
-  ''
   'TrustedAuthentication'
   'UserProfilesService'
   'ExtendedWebApplication'
@@ -43,7 +42,7 @@ param sharePointConfigurationLevel string = 'Medium'
   'ProjectServer'
   'Search'
 ])
-param customSharePointConfiguration array = ['']
+param customSharePointConfiguration array = []
 
 @description('Set to true if the default zone of the main web application must use HTTPS protocol.')
 param defaultZoneMustBeHttps bool = false
@@ -765,7 +764,6 @@ var frontendVirtualMachinesSettings = {
       SQLServerName: templateSettings.vmSQLName
       SQLAlias: environmentSettings.sqlAlias
       SharePointVersion: environmentSettings.sharePointVersion
-      SharePointSitesAuthority: environmentSettings.sharePointSitesAuthority
       EnableAnalysis: environmentSettings.enableAnalysis
       SharePointBits: environmentSettings.sharePointBitsDsc
     }
