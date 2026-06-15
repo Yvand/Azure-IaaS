@@ -1,9 +1,9 @@
 using './main.bicep'
 
-param sharePointVersion = 'Subscription-RTM'
+param sharePointVersion = 'Subscription-Latest'
 // param sharePointVersion = '2019'
-param sharePointConfigurationLevel = 'Medium' //'Custom'
-//param customSharePointConfiguration = ['Addins']
+param sharePointConfigurationLevel = 'Custom' //'Medium'
+param customSharePointConfiguration = ['Addins']
 param defaultZoneMustBeHttps = true
 param frontEndServersCount = 1
 param adminUsername = 'yvand'
