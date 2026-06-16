@@ -1,5 +1,5 @@
 ---
-description: Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key softwares (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).
+description: Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key software (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).
 page_type: sample
 products:
 - azure
@@ -16,7 +16,7 @@ This template creates a secure, highly customizable SharePoint Subscription / 20
 ## Main objectives
 
 - A highly secure, customizable environment, under your full control (you set the AD domain name, admin account name, all accounts password).
-- A SharePoint farm installed with the PU of your choice (including the latest one), and up-to-date Windows and softwares before you first log-in.
+- A SharePoint farm installed with the PU of your choice (including the latest one), and up-to-date Windows and software before you first log-in.
 - A fine-grained control on the SharePoint configuration: You can easily specify what features are configured individually, or choose between 4 levels: 'Minimum', 'Light', 'Medium' (default), and 'Full'
 - Truly ready-to-use virtual machines right at the first log-in, with everything a SharePoint administrator needs.
 - A state-of-the-art configuration that showcases the best practices for a well-configured SharePoint farm.
@@ -115,7 +115,7 @@ You can use <https://azure.com/e/26eea69e35b04cb884b83ce06feadb5c> to estimate t
 ## Known issues
 
 - The password for the User Profile directory synchronization connection (variable `other_accounts_password`) needs to be re-entered in the "Edit synchronization connection" page, otherwise the profile import fails (password decryption error in the logs).
-- When setting `outbound_access_method` to `AzureFirewallProxy`, most of the softwares installed through Chocolatey fail to download and are not installed.
+- When setting `outbound_access_method` to `AzureFirewallProxy`, most of the software installed through Chocolatey fail to download and are not installed.
 - When setting `sharepoint_configuration_level` to `Full` and `front_end_servers_count` > 0: the configuration wizard hangs on the additional web front ends when they join the farm.
 - The deployment of Azure Bastion fails pretty frequently. This has little impact, since it is very easy to redeploy through the portal.
 - SharePoint 2016 and 2019 are outdated and deprecated. Their corresponding DSC configurations receive little maintenance to ensure they continue to deploy, but receive no improvement. As such, variables `sharepoint_configuration_level` and `default_zone_must_be_https` have no effect on them.
