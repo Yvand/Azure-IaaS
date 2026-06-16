@@ -17,7 +17,6 @@
   - Value `Subscription-Latest` for parameter `sharePointVersion` now installs the November 2025 CU for SharePoint Subscription
 - DSC
   - Updated the DSC configurations published in repository https://github.com/Yvand/SharePointInfraDsc to [v3.1.1](https://github.com/Yvand/SharePointInfraDsc/releases/tag/releases%2Fv3.1.1) over [v2.3.0](https://github.com/Yvand/SharePointInfraDsc/releases/tag/releases%2Fv2.3.0) ([seee changelog](https://github.com/Yvand/SharePointInfraDsc/blob/main/CHANGELOG.md)).
-  
 
 ## Enhancements & bug-fixes - Published in April 15, 2026
 
