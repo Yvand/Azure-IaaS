@@ -459,7 +459,7 @@ var environmentSettings = {
   spSvcUserName: 'spsvc'
   spAppPoolUserName: 'spapppool'
   spADDirSyncUserName: 'spdirsync'
-  defaultGlobalConfiguration: ['ApplyBrowserPolicies', 'EnableDscPerformanceAnalysis']
+  defaultGlobalConfiguration: ['ApplyBrowserPolicies']
 }
 
 // Azure Firewall proxy settings
