@@ -2,7 +2,8 @@ using './main.bicep'
 
 param sharePointVersion = 'Subscription-Latest'
 // param sharePointVersion = '2019'
-param sharePointConfigurationLevel = 'Light'
+param sharePointConfigurationLevel = 'Custom' //'Medium'
+param customSharePointConfiguration = ['Addins']
 param defaultZoneMustBeHttps = true
 param frontEndServersCount = 1
 param adminUsername = 'yvand'
@@ -10,7 +11,7 @@ param outboundAccessMethod = 'PublicIPAddress'
 // param outboundAccessMethod = 'AzureFirewallProxy'
 param addNameToPublicIpAddresses = 'SharePointVMsOnly'
 param rdpTrafficRule = 'No'
-param enableAzureBastion = true
+param addBastion = true
 param enableHybridBenefitServerLicenses = true
 // param _artifactsLocation = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.3.0/'
 // param _artifactsLocation = 'https://raw.githubusercontent.com/Yvand/SharePointInfraDsc/refs/heads/dev/src/'

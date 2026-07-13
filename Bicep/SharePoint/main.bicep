@@ -23,12 +23,26 @@ param sharePointVersion string = 'Subscription-Latest'
 
 @description('Level of configuration to apply on the SharePoint farm.')
 @allowed([
+  'Custom'
   'Minimum'
   'Light'
   'Medium'
   'Full'
 ])
-param sharePointConfigurationLevel string = 'Light'
+param sharePointConfigurationLevel string = 'Medium'
+
+@description('Configuration to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to "Custom".')
+@allowed([
+  'TrustedAuthentication'
+  'UserProfilesService'
+  'ExtendedWebApplication'
+  'Addins'
+  'AdditionalSiteCollections'
+  'StateService'
+  'ProjectServer'
+  'Search'
+])
+param customSharePointConfiguration array = []
 
 @description('Set to true if the default zone of the main web application must use HTTPS protocol.')
 param defaultZoneMustBeHttps bool = false
@@ -89,7 +103,7 @@ param outboundAccessMethod string = 'PublicIPAddress'
 param addNameToPublicIpAddresses string = 'SharePointVMsOnly'
 
 @description('Specify if Azure Bastion Developer should be provisioned. See https://go.microsoft.com/fwlink/?linkid=2249215 for more information.')
-param enableAzureBastion bool = false
+param addBastion bool = false
 
 @description('Enable the Azure Hybrid Benefit on virtual machines, to use your on-premises Windows Server licenses and reduce cost. See https://docs.microsoft.com/en-us/azure/virtual-machines/windows/hybrid-use-benefit-licensing for more information.')
 param enableHybridBenefitServerLicenses bool = false
@@ -291,7 +305,7 @@ param vmSharePointStorage string = 'StandardSSD_LRS'
 
 @description('The base URI where artifacts required by this template are located.')
  //param _artifactsLocation string = uri(deployment().properties.templateLink.uri, 'dsc/')
-param _artifactsLocation string = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v2.3.0/'
+param _artifactsLocation string = 'https://github.com/Yvand/SharePointInfraDsc/releases/download/releases/v3.1.1/'
 
 @secure()
 @description('The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured.')
@@ -399,7 +413,7 @@ var sharePointSettings = {
       Label: 'SPLatest'
       Packages: [
         {
-          DownloadUrl: 'https://download.microsoft.com/download/f839c57c-7b4e-4213-b03b-2c1508e13588/uber-subscription-kb5002853-fullfile-x64-glb.exe'
+          DownloadUrl: 'https://download.microsoft.com/download/7b4c3ae5-ce9d-4f5d-8e30-cefd28c92c3e/uber-subscription-kb5002873-fullfile-x64-glb.exe'
         }
       ]
     }
@@ -435,7 +449,6 @@ var environmentSettings = {
     : sharePointVersion)
   localAdminUserName: 'l-${uniqueString(subscription().subscriptionId)}'
   enableAnalysis: false
-  applyBrowserPolicies: true
   sqlAlias: 'SQLAlias'
   spSuperUserName: 'spSuperUser'
   spSuperReaderName: 'spSuperReader'
@@ -446,6 +459,7 @@ var environmentSettings = {
   spSvcUserName: 'spsvc'
   spAppPoolUserName: 'spapppool'
   spADDirSyncUserName: 'spdirsync'
+  defaultGlobalConfiguration: ['ApplyBrowserPolicies']
 }
 
 // Azure Firewall proxy settings
@@ -529,7 +543,7 @@ var baseVirtualMachines = [
         SPServerName: templateSettings.vmSPName
         SharePointSitesAuthority: environmentSettings.sharePointSitesAuthority
         SharePointCentralAdminPort: environmentSettings.sharePointCentralAdminPort
-        ApplyBrowserPolicies: environmentSettings.applyBrowserPolicies
+        GlobalConfiguration: environmentSettings.defaultGlobalConfiguration
       }
       privacy: {
         dataCollection: 'enable'
@@ -666,8 +680,9 @@ var baseVirtualMachines = [
         SharePointCentralAdminPort: environmentSettings.sharePointCentralAdminPort
         EnableAnalysis: environmentSettings.enableAnalysis
         SharePointBits: environmentSettings.sharePointBitsDsc
-        DefaultZoneMustBeHttp: defaultZoneMustBeHttps
-        ConfigurationLevel: sharePointConfigurationLevel
+        DefaultZoneMustBeHttps: defaultZoneMustBeHttps
+        SharePointConfigurationLevel: sharePointConfigurationLevel
+        CustomSharePointConfiguration: customSharePointConfiguration
       }
       privacy: {
         dataCollection: 'enable'
@@ -749,11 +764,8 @@ var frontendVirtualMachinesSettings = {
       SQLServerName: templateSettings.vmSQLName
       SQLAlias: environmentSettings.sqlAlias
       SharePointVersion: environmentSettings.sharePointVersion
-      SharePointSitesAuthority: environmentSettings.sharePointSitesAuthority
       EnableAnalysis: environmentSettings.enableAnalysis
       SharePointBits: environmentSettings.sharePointBitsDsc
-      DefaultZoneMustBeHttp: defaultZoneMustBeHttps
-      ConfigurationLevel: sharePointConfigurationLevel
     }
     privacy: {
       dataCollection: 'enable'
@@ -879,7 +891,7 @@ module frontends 'virtualMachine.bicep' = [
   }
 ]
 
-module bastion 'bastion.bicep' = if (enableAzureBastion == true) {
+module bastion 'bastion.bicep' = if (addBastion == true) {
   name: 'bastion-module'
   params: {
     virtualNetworkName: virtualNetwork.outputs.vnetName
