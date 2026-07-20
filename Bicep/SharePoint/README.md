@@ -53,7 +53,7 @@ About SharePoint legacy: SharePoint 2016 / 2019 use outdated images ([2016](http
   - `2019` (deprecated): Uses the [image](https://marketplace.microsoft.com/en-us/product/sharepointserver.2019?tab=Overview) built and maintained by SharePoint Engineering.
   - `2016` (deprecated): Uses the [image](https://marketplace.microsoft.com/en-us/product/sharepointserver.2016?tab=Overview) built and maintained by SharePoint Engineering.
 - Parameter `sharePointConfigurationLevel` sets how much configuration is done:
-  - `Custom`: You specify what SharePoint features are installed by setting the parameter `custom_sharepoint_configuration`.
+  - `Custom`: You specify what SharePoint features are installed by setting the parameter `customSharePointConfiguration`.
   - `Minimum`: Creates a web application with its default zone only.
   - `Light`: Everything in `Minimum`, plus:
     - Provisions the State Service Application.
