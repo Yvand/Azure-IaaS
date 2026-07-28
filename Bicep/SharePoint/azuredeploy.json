@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.45.15.27210",
-      "templateHash": "17896078179737120060"
+      "templateHash": "12161615352964721943"
     },
     "description": "Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key softwares (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).",
     "author": "Yvand"
@@ -54,10 +54,11 @@
     },
     "customSharePointConfiguration": {
       "type": "array",
-      "defaultValue": [],
+      "defaultValue": [
+        "null"
+      ],
       "allowedValues": [
         "null",
-        "test2",
         "TrustedAuthentication",
         "UserProfilesService",
         "ExtendedWebApplication",
@@ -68,7 +69,7 @@
         "Search"
       ],
       "metadata": {
-        "description": "Configuration 2 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to 'Custom'.\n"
+        "description": "Configuration 3 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to Custom.\n"
       }
     },
     "defaultZoneMustBeHttps": {
@@ -726,7 +727,7 @@
             "SharePointBits": "[variables('environmentSettings').sharePointBitsDsc]",
             "DefaultZoneMustBeHttps": "[parameters('defaultZoneMustBeHttps')]",
             "SharePointConfigurationLevel": "[parameters('sharePointConfigurationLevel')]",
-            "CustomSharePointConfiguration": "[parameters('customSharePointConfiguration')]"
+            "CustomSharePointConfiguration": "[filter(parameters('customSharePointConfiguration'), lambda('item', not(equals(lambdaVariables('item'), 'null'))))]"
           },
           "privacy": {
             "dataCollection": "enable"

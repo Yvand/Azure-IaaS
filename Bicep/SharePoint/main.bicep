@@ -32,11 +32,10 @@ param sharePointVersion string = 'Subscription-Latest'
 param sharePointConfigurationLevel string = 'Medium'
 
 @description('''
-Configuration 2 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to 'Custom'.
+Configuration 3 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to Custom.
 ''')
 @allowed([
   'null'
-  'test2'
   'TrustedAuthentication'
   'UserProfilesService'
   'ExtendedWebApplication'
@@ -46,7 +45,7 @@ Configuration 2 to apply to the SharePoint farm. Used only if sharePointConfigur
   'ProjectServer'
   'Search'
 ])
-param customSharePointConfiguration array = []
+param customSharePointConfiguration array = ['null']
 
 @description('Set to true if the default zone of the main web application must use HTTPS protocol.')
 param defaultZoneMustBeHttps bool = false
@@ -686,7 +685,7 @@ var baseVirtualMachines = [
         SharePointBits: environmentSettings.sharePointBitsDsc
         DefaultZoneMustBeHttps: defaultZoneMustBeHttps
         SharePointConfigurationLevel: sharePointConfigurationLevel
-        CustomSharePointConfiguration: customSharePointConfiguration
+        CustomSharePointConfiguration: filter(customSharePointConfiguration, item => item != 'null')
       }
       privacy: {
         dataCollection: 'enable'
