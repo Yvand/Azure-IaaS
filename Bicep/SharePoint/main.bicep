@@ -32,10 +32,10 @@ param sharePointVersion string = 'Subscription-Latest'
 param sharePointConfigurationLevel string = 'Medium'
 
 @description('''
-Configuration 3 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to Custom.
+Configuration 4 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to Custom.
 ''')
 @allowed([
-  'null'
+  ''
   'TrustedAuthentication'
   'UserProfilesService'
   'ExtendedWebApplication'
@@ -45,7 +45,7 @@ Configuration 3 to apply to the SharePoint farm. Used only if sharePointConfigur
   'ProjectServer'
   'Search'
 ])
-param customSharePointConfiguration array = ['null']
+param customSharePointConfiguration string[] = ['']
 
 @description('Set to true if the default zone of the main web application must use HTTPS protocol.')
 param defaultZoneMustBeHttps bool = false
