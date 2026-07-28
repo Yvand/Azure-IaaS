@@ -32,11 +32,11 @@ param sharePointVersion string = 'Subscription-Latest'
 param sharePointConfigurationLevel string = 'Medium'
 
 @description('''
-Configuration 1 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to "Custom".
+Configuration 2 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to 'Custom'.
 ''')
 @allowed([
-  ''
-  'test1'
+  'null'
+  'test2'
   'TrustedAuthentication'
   'UserProfilesService'
   'ExtendedWebApplication'
