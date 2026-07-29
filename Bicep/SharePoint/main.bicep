@@ -32,7 +32,7 @@ param sharePointVersion string = 'Subscription-Latest'
 param sharePointConfigurationLevel string = 'Medium'
 
 @description('''
-Configuration 4 to apply to the SharePoint farm. Used only if sharePointConfigurationLevel is set to Custom.
+Custom SharePoint configuration. Used only if parameter sharePointConfigurationLevel is set to Custom.
 ''')
 @allowed([
   'null'
