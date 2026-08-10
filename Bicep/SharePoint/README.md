@@ -38,6 +38,13 @@ About SharePoint legacy: SharePoint 2016 / 2019 use outdated images ([2016](http
 
 > **Note:** A public version of this template is available at <https://azure.microsoft.com/resources/templates/sharepoint-adfs/>
 
+### Deploy using az cli (in PowerShell)
+
+```powershell
+az group create --location "france central" --name "sharepoint-quickstart"
+az deployment group create --name "sharepoint-quickstart" --resource-group "sharepoint-quickstart" --template-uri "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/refs/heads/master/application-workloads/sharepoint/sharepoint-adfs/azuredeploy.json" --parameters sharePointVersion='Subscription-Latest' sharePointConfigurationLevel='Custom' customSharePointConfiguration="['Addins', 'TrustedAuthentication']" adminUsername='yvand' adminPassword='<PASSWORD>' otherAccountsPassword='<PASSWORD>'
+```
+
 ## SharePoint configuration
 
 - Parameter `sharePointVersion` sets which version of SharePoint will be installed:
