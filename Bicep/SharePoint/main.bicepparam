@@ -2,10 +2,10 @@ using './main.bicep'
 
 param sharePointVersion = 'Subscription-Latest'
 // param sharePointVersion = '2019'
-param sharePointConfigurationLevel = 'Medium' //'Medium'
-// param customSharePointConfiguration = ['Addins']
+param sharePointConfigurationLevel = 'Custom' //'Medium'
+param customSharePointConfiguration = ['Addins', 'TrustedAuthentication']
 param defaultZoneMustBeHttps = true
-param frontEndServersCount = 1
+param frontEndServersCount = 0
 param adminUsername = 'yvand'
 param outboundAccessMethod = 'PublicIPAddress'
 // param outboundAccessMethod = 'AzureFirewallProxy'
