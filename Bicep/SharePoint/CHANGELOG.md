@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## Enhancements & bug-fixes - Published in August 14, 2026
+
+### Changed
+
+- Template
+  - Updated bicep modules and resources to their latest version
+  - Value `Subscription-Latest` for parameter `sharePointVersion` now installs the August 2026 CU for SharePoint Subscription
+
 ## Enhancements & bug-fixes - Published in July 29, 2026
 
 ### Fixed
