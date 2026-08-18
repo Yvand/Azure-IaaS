@@ -1,14 +1,14 @@
 using './main.bicep'
 
-param sharePointVersion = 'Subscription-Latest'
+param sharePointVersion = 'Subscription-RTM'
 // param sharePointVersion = '2019'
-param sharePointConfigurationLevel = 'Custom' //'Medium'
+param sharePointConfigurationLevel = 'Medium' //'Medium'
 param customSharePointConfiguration = ['Addins', 'TrustedAuthentication']
 param defaultZoneMustBeHttps = true
-param frontEndServersCount = 1
+param frontEndServersCount = 0
 param adminUsername = 'yvand'
-param outboundAccessMethod = 'PublicIPAddress'
-// param outboundAccessMethod = 'AzureFirewallProxy'
+// param outboundAccessMethod = 'PublicIPAddress'
+param outboundAccessMethod = 'AzureFirewallProxy'
 param addNameToPublicIpAddresses = 'SharePointVMsOnly'
 param rdpTrafficRule = 'No'
 param addBastion = true

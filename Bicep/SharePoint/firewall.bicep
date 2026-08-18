@@ -3,8 +3,9 @@ param location string = resourceGroup().location
 
 param virtualNetworkName string
 param addressPrefix string
-param http_port int = 8080
-param https_port int = 8443
+param firewallPrivateIpAddress string
+param http_port int
+param https_port int
 @description('Tags to apply on the resources.')
 param tags object
 
@@ -87,6 +88,7 @@ module firewall 'br/public:avm/res/network/azure-firewall:0.11.1' = {
     azureSkuTier: 'Standard'
     virtualNetworkResourceId: virtualNetwork.id
     firewallPolicyId: firewall_policy_proxy.id
+    firewallPrivateIpAddress: firewallPrivateIpAddress
     threatIntelMode: 'Alert'
     publicIPAddressObject: {
       name: 'firewall-pip'

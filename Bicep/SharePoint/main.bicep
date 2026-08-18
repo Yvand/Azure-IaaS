@@ -468,8 +468,8 @@ var environmentSettings = {
 // Azure Firewall proxy settings
 var firewallProxySettings = {
   firewallAddressPrefix: cidrSubnet(templateSettings.vNetPrivatePrefix, 24, 3)
-  httpPort: 8080
-  httpsPort: 8443
+  httpPort: 9009
+  httpsPort: 9009
 }
 
 var allTags = union(tags, defaultTags)
@@ -908,6 +908,7 @@ module firewall 'firewall.bicep' = if (outboundAccessMethod == 'AzureFirewallPro
     virtualNetworkName: virtualNetwork.outputs.vnetName
     tags: allTags
     addressPrefix: firewallProxySettings.firewallAddressPrefix
+    firewallPrivateIpAddress: cidrHost(firewallProxySettings.firewallAddressPrefix, 3)
     http_port: firewallProxySettings.httpPort
     https_port: firewallProxySettings.httpsPort
   }
