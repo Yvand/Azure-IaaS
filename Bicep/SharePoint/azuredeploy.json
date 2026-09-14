@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.47.16.16243",
-      "templateHash": "3039955003295467677"
+      "templateHash": "600824884703941276"
     },
     "description": "Create a DC, a SQL Server 2025, and from 1 to 5 server(s) hosting a SharePoint Subscription / 2019 / 2016 farm with an extensive configuration, including trusted authentication, user profiles with personal sites, an OAuth trust (using a certificate), a dedicated IIS site for hosting high-trust add-ins, etc... The latest version of key softwares (including Fiddler, vscode, np++, 7zip, ULS Viewer) is installed. SharePoint machines have additional fine-tuning to make them immediately usable (remote administration tools, custom policies for Edge and Chrome, shortcuts, etc...).",
     "author": "Yvand"
@@ -518,7 +518,7 @@
           "Label": "SPLatest",
           "Packages": [
             {
-              "DownloadUrl": "https://download.microsoft.com/download/4096f5f0-fe90-47d9-bc8d-330eaa11b9da/uber-subscription-kb5002893-fullfile-x64-glb.exe"
+              "DownloadUrl": "https://download.microsoft.com/download/28e5d95a-225d-4669-b3da-2fe1aec3399c/uber-subscription-kb5002908-fullfile-x64-glb.exe"
             }
           ]
         }
@@ -873,7 +873,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.47.16.16243",
-              "templateHash": "6326028629581240353"
+              "templateHash": "17334275485506708273"
             }
           },
           "parameters": {
@@ -1614,7 +1614,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.46.1.21595",
-                      "templateHash": "600382754425975760"
+                      "templateHash": "494796290893196181"
                     },
                     "name": "Virtual Networks",
                     "description": "This module deploys a Virtual Network (vNet)."
@@ -2157,8 +2157,9 @@
                       "items": {
                         "type": "string"
                       },
+                      "nullable": true,
                       "metadata": {
-                        "description": "Required. An Array of 1 or more IP Address Prefixes OR the resource ID of the IPAM pool to be used for the Virtual Network. When specifying an IPAM pool resource ID you must also set a value for the parameter called `ipamPoolNumberOfIpAddresses`."
+                        "description": "Conditional. An Array of 1 or more IP Address Prefixes OR the resource ID of the IPAM pool to be used for the Virtual Network. When specifying an IPAM pool resource ID you must also set a value for the parameter called `ipamPoolNumberOfIpAddresses`. Required if `ipamPoolPrefixAllocations` is empty. Cannot be combined with `ipamPoolPrefixAllocations` as Azure does not allow mixing explicit prefixes and IPAM pool references in the same address space."
                       }
                     },
                     "ipamPoolNumberOfIpAddresses": {
@@ -2167,6 +2168,16 @@
                       "metadata": {
                         "description": "Optional. Number of IP addresses allocated from the pool. To be used only when the addressPrefix param is defined with a resource ID of an IPAM pool."
                       }
+                    },
+                    "ipamPoolPrefixAllocations": {
+                      "type": "array",
+                      "metadata": {
+                        "__bicep_resource_derived_type!": {
+                          "source": "Microsoft.Network/virtualNetworks@2025-05-01#properties/properties/properties/addressSpace/properties/ipamPoolPrefixAllocations"
+                        },
+                        "description": "Conditional. The IPAM pool prefix allocations to use for the Virtual Network address space. Required if `addressPrefixes` is empty. Cannot be combined with `addressPrefixes` as Azure does not allow mixing explicit prefixes and IPAM pool references in the same address space."
+                      },
+                      "nullable": true
                     },
                     "virtualNetworkBgpCommunity": {
                       "type": "string",
@@ -2320,6 +2331,7 @@
                       }
                     ],
                     "enableReferencedModulesTelemetry": false,
+                    "addressPrefixIsIpamPoolResourceId": "[and(not(empty(coalesce(parameters('addressPrefixes'), createArray()))), contains(coalesce(parameters('addressPrefixes'), createArray(''))[0], '/Microsoft.Network/networkManagers/'))]",
                     "builtInRoleNames": {
                       "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
                       "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
@@ -2334,7 +2346,7 @@
                       "condition": "[parameters('enableTelemetry')]",
                       "type": "Microsoft.Resources/deployments",
                       "apiVersion": "2025-04-01",
-                      "name": "[format('46d3xbcp.res.network-virtualnetwork.{0}.{1}', replace('0.10.1', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
+                      "name": "[format('46d3xbcp.res.network-virtualnetwork.{0}.{1}', replace('0.10.2', '.', '-'), substring(uniqueString(deployment().name, parameters('location')), 0, 4))]",
                       "properties": {
                         "mode": "Incremental",
                         "template": {
@@ -2358,7 +2370,10 @@
                       "tags": "[parameters('tags')]",
                       "properties": {
                         "ipAllocations": "[parameters('ipAllocations')]",
-                        "addressSpace": "[if(contains(parameters('addressPrefixes')[0], '/Microsoft.Network/networkManagers/'), createObject('ipamPoolPrefixAllocations', createArray(createObject('pool', createObject('id', parameters('addressPrefixes')[0]), 'numberOfIpAddresses', parameters('ipamPoolNumberOfIpAddresses')))), createObject('addressPrefixes', parameters('addressPrefixes')))]",
+                        "addressSpace": {
+                          "addressPrefixes": "[if(or(variables('addressPrefixIsIpamPoolResourceId'), empty(coalesce(parameters('addressPrefixes'), createArray()))), null(), parameters('addressPrefixes'))]",
+                          "ipamPoolPrefixAllocations": "[if(variables('addressPrefixIsIpamPoolResourceId'), createArray(createObject('pool', createObject('id', coalesce(parameters('addressPrefixes'), createArray(''))[0]), 'numberOfIpAddresses', parameters('ipamPoolNumberOfIpAddresses'))), parameters('ipamPoolPrefixAllocations'))]"
+                        },
                         "bgpCommunities": "[if(not(empty(parameters('virtualNetworkBgpCommunity'))), createObject('virtualNetworkCommunity', parameters('virtualNetworkBgpCommunity')), null())]",
                         "ddosProtectionPlan": "[if(not(empty(parameters('ddosProtectionPlanResourceId'))), createObject('id', parameters('ddosProtectionPlanResourceId')), null())]",
                         "dhcpOptions": "[if(not(empty(parameters('dnsServers'))), createObject('dnsServers', array(parameters('dnsServers'))), null())]",
@@ -3492,7 +3507,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.47.16.16243",
-              "templateHash": "16897087149897270419"
+              "templateHash": "6032842197646860997"
             }
           },
           "parameters": {
@@ -3612,7 +3627,7 @@
             "virtualMachineCreated": {
               "existing": true,
               "type": "Microsoft.Compute/virtualMachines",
-              "apiVersion": "2025-11-01",
+              "apiVersion": "2026-03-01",
               "name": "[format('vm-{0}', parameters('virtualMachineName'))]",
               "dependsOn": [
                 "virtualMachine"
@@ -3621,7 +3636,7 @@
             "runcommand": {
               "condition": "[not(equals(parameters('runCommandProperties'), null()))]",
               "type": "Microsoft.Compute/virtualMachines/runCommands",
-              "apiVersion": "2025-11-01",
+              "apiVersion": "2026-03-01",
               "name": "[format('{0}/{1}', format('vm-{0}', parameters('virtualMachineName')), format('{0}-{1}-runcommand', variables('modulePrefix'), parameters('virtualMachineName')))]",
               "location": "[parameters('location')]",
               "properties": "[parameters('runCommandProperties')]",
@@ -3632,7 +3647,7 @@
             "extension": {
               "condition": "[not(equals(parameters('dscSettings'), null()))]",
               "type": "Microsoft.Compute/virtualMachines/extensions",
-              "apiVersion": "2025-11-01",
+              "apiVersion": "2026-03-01",
               "name": "[format('{0}/{1}', format('vm-{0}', parameters('virtualMachineName')), format('{0}-{1}-dsc', variables('modulePrefix'), parameters('virtualMachineName')))]",
               "location": "[parameters('location')]",
               "properties": {
@@ -13202,7 +13217,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.47.16.16243",
-              "templateHash": "16897087149897270419"
+              "templateHash": "6032842197646860997"
             }
           },
           "parameters": {
@@ -13322,7 +13337,7 @@
             "virtualMachineCreated": {
               "existing": true,
               "type": "Microsoft.Compute/virtualMachines",
-              "apiVersion": "2025-11-01",
+              "apiVersion": "2026-03-01",
               "name": "[format('vm-{0}', parameters('virtualMachineName'))]",
               "dependsOn": [
                 "virtualMachine"
@@ -13331,7 +13346,7 @@
             "runcommand": {
               "condition": "[not(equals(parameters('runCommandProperties'), null()))]",
               "type": "Microsoft.Compute/virtualMachines/runCommands",
-              "apiVersion": "2025-11-01",
+              "apiVersion": "2026-03-01",
               "name": "[format('{0}/{1}', format('vm-{0}', parameters('virtualMachineName')), format('{0}-{1}-runcommand', variables('modulePrefix'), parameters('virtualMachineName')))]",
               "location": "[parameters('location')]",
               "properties": "[parameters('runCommandProperties')]",
@@ -13342,7 +13357,7 @@
             "extension": {
               "condition": "[not(equals(parameters('dscSettings'), null()))]",
               "type": "Microsoft.Compute/virtualMachines/extensions",
-              "apiVersion": "2025-11-01",
+              "apiVersion": "2026-03-01",
               "name": "[format('{0}/{1}', format('vm-{0}', parameters('virtualMachineName')), format('{0}-{1}-dsc', variables('modulePrefix'), parameters('virtualMachineName')))]",
               "location": "[parameters('location')]",
               "properties": {
