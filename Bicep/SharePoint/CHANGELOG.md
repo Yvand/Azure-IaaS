@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Changed
+
+- Template
+  - Updated bicep modules and resources to their latest version
+  - Value `Subscription-Latest` for parameter `sharePointVersion` now installs the September 2026 CU for SharePoint Subscription
+
+### Fixed
+
+- Template
+  - Fixed deployment failed due to VMs unable to connect to internet, when parameter `outboundAccessMethod` is set to `AzureFirewallProxy`
+
 ## Enhancements & bug-fixes - Published in August 14, 2026
 
 ### Changed
