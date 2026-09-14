@@ -35,7 +35,7 @@ resource firewall_policy_proxy 'Microsoft.Network/firewallPolicies@2025-07-01' =
     explicitProxy: {
       enableExplicitProxy: true
       httpPort: http_port
-      httpsPort: https_port
+      // httpsPort: https_port
       enablePacFile: false
     }
   }
@@ -98,4 +98,8 @@ module firewall 'br/public:avm/res/network/azure-firewall:0.11.1' = {
       skuTier: 'Regional'
     }
   }
+  // The allow-outbound rule must be committed to the policy before callers treat the firewall as ready to use
+  dependsOn: [
+    firewall_proxy_rules
+  ]
 }

@@ -850,6 +850,8 @@ module baseVirtualMachinesModule 'virtualMachine.bicep' = [
       dscProtectedSettings: baseVirtualMachine.dscProtectedSettings
       runCommandProperties: outboundAccessMethod == 'AzureFirewallProxy' ? firewall_runCommandProperties : null
     }
+    // Ensure the firewall (and its proxy listener) is up before the VM run command tries to configure the proxy
+    dependsOn: outboundAccessMethod == 'AzureFirewallProxy' ? [firewall] : []
   }
 ]
 
@@ -891,6 +893,8 @@ module frontends 'virtualMachine.bicep' = [
       dscProtectedSettings: frontendVirtualMachinesSettings.dscProtectedSettings
       runCommandProperties: outboundAccessMethod == 'AzureFirewallProxy' ? firewall_runCommandProperties : null
     }
+    // Ensure the firewall (and its proxy listener) is up before the VM run command tries to configure the proxy
+    dependsOn: outboundAccessMethod == 'AzureFirewallProxy' ? [firewall] : []
   }
 ]
 
