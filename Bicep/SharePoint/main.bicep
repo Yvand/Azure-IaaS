@@ -914,7 +914,7 @@ module firewall 'firewall.bicep' = if (outboundAccessMethod == 'AzureFirewallPro
     addressPrefix: firewallProxySettings.firewallAddressPrefix
     firewallPrivateIpAddress: cidrHost(firewallProxySettings.firewallAddressPrefix, 3)
     http_port: firewallProxySettings.httpPort
-    https_port: firewallProxySettings.httpsPort
+    // https_port: firewallProxySettings.httpsPort
   }
 }
 

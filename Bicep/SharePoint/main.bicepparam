@@ -2,8 +2,8 @@ using './main.bicep'
 
 param sharePointVersion = 'Subscription-RTM'
 // param sharePointVersion = '2019'
-param sharePointConfigurationLevel = 'Minimum' //'Medium'
-param customSharePointConfiguration = ['Addins', 'TrustedAuthentication']
+param sharePointConfigurationLevel = 'Custom' //'Medium'
+param customSharePointConfiguration = ['TrustedAuthentication'] //['Addins', 'TrustedAuthentication']
 param defaultZoneMustBeHttps = true
 param frontEndServersCount = 0
 param adminUsername = 'yvand'

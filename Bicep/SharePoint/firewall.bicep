@@ -5,7 +5,7 @@ param virtualNetworkName string
 param addressPrefix string
 param firewallPrivateIpAddress string
 param http_port int
-param https_port int
+// param https_port int
 @description('Tags to apply on the resources.')
 param tags object
 
