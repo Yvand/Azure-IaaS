@@ -2,7 +2,7 @@ Import-Module "${Env:ARMTTK_PATH}/arm-ttk.psd1"
 
 $testResults = $null
 #$testResults = Test-AzTemplate -TemplatePath "/github/workspace/Templates/SharePoint-ADFS"
-$directories = Get-ChildItem -Path "/github/workspace/Templates" -Recurse -Filter "main.bicepparam" | ForEach-Object { [System.IO.Path]::GetDirectoryName($_) }
+$directories = Get-ChildItem -Path "/github/workspace" -Recurse -Filter "main.bicepparam" | ForEach-Object { [System.IO.Path]::GetDirectoryName($_) }
 foreach ($directory in $directories) {
     # Skip test artifacts-parameter - https://github.com/Azure/arm-ttk/issues/637
     $testResults += Test-AzTemplate -TemplatePath $directory -Skip "artifacts-parameter" #-TestParameter @{RawRepoPath="https://github.com/Yvand/AzureRM-Templates/raw/master/Templates/"}
