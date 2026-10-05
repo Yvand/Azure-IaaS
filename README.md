@@ -123,7 +123,7 @@ You can use <https://azure.com/e/26eea69e35b04cb884b83ce06feadb5c> to estimate t
 
 ## Known issues
 
-- The password for the User Profile directory synchronization connection (variable `other_accounts_password`) needs to be re-entered in the "Edit synchronization connection" page, otherwise the profile import fails (password decryption error in the logs).
+- The password for the User Profile directory synchronization connection (parameter `otherAccountsPassword`) needs to be re-entered in the "Edit synchronization connection" page, otherwise the profile import fails (password decryption error in the logs).
 - When setting `outbound_access_method` to `AzureFirewallProxy`, most of the software installed through Chocolatey fail to download and are not installed.
 - When setting `sharepoint_configuration_level` to `Full` and `front_end_servers_count` > 0: the configuration wizard hangs on the additional web front ends when they join the farm.
 - The deployment of Azure Bastion fails pretty frequently. This has little impact, since it is very easy to redeploy through the portal.
