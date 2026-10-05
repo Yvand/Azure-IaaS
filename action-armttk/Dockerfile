@@ -12,10 +12,11 @@ RUN apt-get update && \
 #RUN git clone --depth 1 https://github.com/Yvand/AzureRM-Templates.git /github/workspace
 
 # Download arm-ttk
-ENV ARMTTK_PATH="/src/arm-ttk"
+ENV ARMTTK_PATH="/src/arm-ttk/arm-ttk"
 # RUN git clone --depth 1 https://github.com/Azure/arm-ttk.git $ARMTTK_PATH
-RUN curl -s https://api.github.com/repos/Azure/arm-ttk/releases/latest | grep "browser_download_url.*arm-ttk.zip" | cut -d : -f 2,3 | tr -d \" | xargs wget --directory-prefix=$ARMTTK_PATH -q
-RUN unzip "$ARMTTK_PATH/arm-ttk.zip" -d $ARMTTK_PATH
+RUN curl -s https://api.github.com/repos/Azure/arm-ttk/releases/latest | grep "browser_download_url.*arm-ttk.zip" | cut -d : -f 2,3 | tr -d \" | xargs wget --directory-prefix=/src -q
+RUN unzip "/src/arm-ttk.zip" -d /src
+RUN test -f "$ARMTTK_PATH/arm-ttk.psd1"
 
 # Copy the Entrypoint file from the current directory (the one the Dockerfile is located in)
 COPY entrypoint.ps1 /src/entrypoint.ps1
