@@ -1,4 +1,4 @@
-Import-Module "${Env:ARMTTK_PATH}/arm-ttk/arm-ttk.psd1"
+Import-Module "${Env:ARMTTK_PATH}/arm-ttk.psd1"
 
 $testResults = $null
 #$testResults = Test-AzTemplate -TemplatePath "/github/workspace/Templates/SharePoint-ADFS"
