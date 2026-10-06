@@ -38,16 +38,6 @@ About SharePoint legacy: SharePoint 2016 / 2019 use outdated images ([2016](http
 
 > **Note:** A public version of this template is available at <https://azure.microsoft.com/resources/templates/sharepoint-adfs/>
 
-### Update Bicep dependencies with Copilot
-
-The repository includes the [bicep-updater custom agent](.github/agents/bicep-updater.agent.md). In Copilot CLI, select it with `/agent bicep-updater`; in VS Code, select `bicep-updater` from the Chat agent picker. Then ask: "Update the Bicep modules and resource API versions and open a PR." Selecting the agent alone does not run an upgrade.
-
-The agent discovers current published versions of registry modules and resource APIs, preferring stable releases and using previews only when required functionality has no suitable stable version. It asks before every compatibility edit; declined or unanswered requests are skipped and reported. VM images, extension handler versions, SharePoint/software versions, and vendor module internals are outside its scope.
-
-For retained upgrades, it builds `main.bicep`, checks fresh generated ARM JSON and the template diff, and runs ARM TTK only if already available locally. It regenerates `azuredeploy.json`, commits the validated changes on a dedicated branch, pushes it, and opens a **ready-for-review PR against the repository's default branch**. Validated partial updates are allowed, with skipped upgrades and blockers documented in the PR body alongside the change and validation summary. Existing edits and unrelated commits are kept out of the PR. No retained upgrades means no commit or PR; delivery failures are reported with the recoverable state preserved.
-
-Prerequisites: Azure CLI with Bicep available through `az bicep version`, Git, authenticated GitHub CLI (`gh`), access to official version metadata and module registries, and permission to push a branch and create a PR. If a fork or a different remote is needed, the agent asks rather than configuring one silently. Missing local ARM TTK is reported explicitly; the existing PR workflow runs it in CI. The agent never deploys, runs Azure-side deployment validation, force-pushes, or merges the PR; local checks do not guarantee deployment success.
-
 ### Deploy using az cli (in PowerShell)
 
 ```powershell
