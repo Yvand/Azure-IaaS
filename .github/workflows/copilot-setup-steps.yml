@@ -1,0 +1,73 @@
+name: Copilot Setup Steps
+
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Ensure Azure CLI is available
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v az > /dev/null 2>&1; then
+            installer="$(mktemp "$RUNNER_TEMP/azure-cli-install.XXXXXX")"
+            trap 'rm -f -- "$installer"' EXIT
+            curl --fail --show-error --location https://aka.ms/InstallAzureCLIDeb --output "$installer"
+            sudo bash "$installer"
+          fi
+          az version
+
+      - name: Install or upgrade Bicep to latest stable
+        shell: bash
+        run: |
+          set -euo pipefail
+          az config set bicep.use_binary_from_path=false
+          az bicep upgrade
+          az bicep version
+
+      - name: Smoke build the root template
+        shell: bash
+        run: |
+          set -euo pipefail
+          output_dir="$(mktemp -d "$RUNNER_TEMP/bicep-smoke.XXXXXX")"
+          trap 'rm -f -- "$output_dir/azuredeploy.json"; rmdir -- "$output_dir"' EXIT
+          az bicep build --file main.bicep --outfile "$output_dir/azuredeploy.json"
+          if [[ ! -s "$output_dir/azuredeploy.json" ]]; then
+            echo "::error::Bicep did not produce a nonempty ARM template."
+            exit 1
+          fi
+          python3 - "$output_dir/azuredeploy.json" <<'PY'
+          import json
+          import re
+          import sys
+
+          with open(sys.argv[1], encoding="utf-8") as stream:
+              template = json.load(stream)
+          if not isinstance(template, dict):
+              raise SystemExit("::error::ARM template must be a JSON object.")
+          schema = template.get("$schema")
+          if not isinstance(schema, str) or not re.fullmatch(
+              r"https?://schema\.management\.azure\.com/schemas/[^/]+/deploymentTemplate\.json#?", schema
+          ):
+              raise SystemExit("::error::ARM template has an invalid deployment schema.")
+          version = template.get("contentVersion")
+          if not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+", version):
+              raise SystemExit("::error::ARM template has an invalid contentVersion.")
+          resources = template.get("resources")
+          if not isinstance(resources, (list, dict)) or not resources:
+              raise SystemExit("::error::ARM template must contain resources.")
+          PY
+          echo "Root template compiled and passed basic JSON structure checks."

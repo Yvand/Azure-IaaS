@@ -121,6 +121,18 @@ Below is the default size and storage used per virtual machine role:
 
 You can use <https://azure.com/e/26eea69e35b04cb884b83ce06feadb5c> to estimate the monthly cost of deploying the resources in this module, in the region/currency of your choice, assuming it is created using the default settings and runs 24*7.
 
+## Bicep dependency updates with Copilot
+
+Select the `bicep-updater` custom agent when starting a Copilot cloud task for this repository, and request Bicep dependency updates and a pull request. Make sure `.github/agents/bicep-updater.agent.md` is available on the branch used to start the task. The agent uses Copilot's assigned checkout/branch and managed delivery; an unauthenticated `gh` CLI or a local/proxied `origin` is not a cloud prerequisite failure. Do not add a personal access token or rewrite the remote to work around those messages. Local CLI/IDE runs still require authenticated GitHub CLI access and a verified writable remote.
+
+The [Copilot setup steps workflow](.github/workflows/copilot-setup-steps.yml) prepares an Ubuntu runner before cloud tasks start. It reuses Azure CLI when present or installs it through Microsoft's installer, installs/upgrades the Azure CLI-managed Bicep compiler to the latest stable release, and prints both tool versions. A smoke build compiles `main.bicep`, restores its pinned public AVM modules, and checks basic ARM JSON structure in a fresh temporary directory. It does not overwrite tracked `azuredeploy.json`, install ARM-TTK, or perform Azure deployment validation. No Azure login, subscription credentials, or GitHub write token is needed; ARM-TTK remains in the existing PR workflow.
+
+Merge the setup workflow into the default branch to activate it for cloud sessions. It also runs when its file changes in a push or PR and supports manual dispatch from the Actions tab. Run **Copilot Setup Steps** and check its logs, then start a new cloud task. Tool versions are intentionally not pinned, so compiler output and diagnostics can change between sessions. [GitHub starts the agent even if a setup step fails](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment), skipping the remaining steps; resolve failed setup logs rather than assuming the environment is complete. The updater still checks its toolchain and baseline independently.
+
+Keep required network access available: Azure CLI's installer uses `aka.ms` and `packages.microsoft.com`; Bicep releases use GitHub and its release-download hosts; AVM restore uses `mcr.microsoft.com` and its artifact endpoints. During the agent session, version research also needs Microsoft Learn and upstream GitHub release/source metadata. Review the repository's cloud firewall allowlist if logs report blocked endpoints, including redirected download hosts; do not disable the firewall or add credentials as a workaround. The updater reports inaccessible metadata rather than guessing versions.
+
+Cloud delivery may leave a draft PR: [Copilot cannot mark its PR ready for review](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/risks-and-mitigations). A human must review the result, mark it ready, and approve PR workflow execution when required. Compatibility edits still require explicit approval; unattended runs skip affected upgrades and can deliver a validated partial update. The agent never deploys Azure resources.
+
 ## Known issues
 
 - The password for the User Profile directory synchronization connection (parameter `otherAccountsPassword`) needs to be re-entered in the "Edit synchronization connection" page, otherwise the profile import fails (password decryption error in the logs).
