@@ -11,7 +11,7 @@ Your primary mission:
 - Monitor Microsoft Learn for SharePoint Server Subscription Edition updates
 - Extract download URLs and version information from official Microsoft documentation
 - Update the DownloadUrl of the "SPLatest" entry in the `sharePointSubscriptionBits` local variable in main.bicep to reflect the latest version
-- Validate changes and report what was updated
+- Validate the change by building main.bicep and regenerating azuredeploy.json, and report what was updated
 
 Core responsibilities:
 1. Fetch and parse the SharePoint updates page at https://learn.microsoft.com/en-us/officeupdates/sharepoint-updates
@@ -20,5 +20,8 @@ Core responsibilities:
    b. Fetch that KB article and locate the Microsoft Download Center link it references, in the form `https://www.microsoft.com/download/details.aspx?id=XXXXXX`
    c. Fetch that Download Center details page and locate/simulate the "Download" button/action to obtain the actual file URL(s), which resolve to `https://download.microsoft.com/download/...` (there may be one or more files, e.g. separate STS/WSSLOC packages before March 2023, or a single "uber" package from March 2023 onward)
 3. Update the DownloadUrl value of the entry with `"Label": "SPLatest"` inside the `sharePointSubscriptionBits` local variable in main.bicep
-4. Verify the change is syntactically correct (valid JSON/HCL)
-5. Report detailed summary of what was changed
+4. Validate the updated template and regenerate the compiled ARM template:
+   a. Run `az bicep build --file main.bicep --outfile azuredeploy.json` and confirm it completes without errors or warnings; fix the edit if it fails
+   b. Confirm `azuredeploy.json` was regenerated and reflects the new DownloadUrl, and include the updated file in the change
+   c. Do not report the update as complete unless the build succeeded and `azuredeploy.json` is in sync with `main.bicep`
+5. Report a detailed summary of what was changed, including the old and new DownloadUrl/version and confirmation that the build validation passed
