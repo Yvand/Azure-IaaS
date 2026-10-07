@@ -1,7 +1,6 @@
 using './main.bicep'
 
 param sharePointVersion = 'Subscription-RTM'
-// param sharePointVersion = '2019'
 param sharePointConfigurationLevel = 'Custom' //'Medium'
 param customSharePointConfiguration = ['TrustedAuthentication'] //['Addins', 'TrustedAuthentication']
 param defaultZoneMustBeHttps = true
