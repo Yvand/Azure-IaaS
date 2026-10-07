@@ -430,7 +430,6 @@ var environmentSettings = {
   dcPrivateIPAddress: '10.1.1.100'
   sharePointSitesAuthority: 'spsites'
   sharePointCentralAdminPort: 5000
-  sharePointBitsDsc: sharePointSubscriptionBits
   sharePointVersion: 'SP${split(sharePointVersion, '-')[1]}'
   localAdminUserName: 'l-${uniqueString(subscription().subscriptionId)}'
   enableAnalysis: false
@@ -661,7 +660,7 @@ var baseVirtualMachines = [
         SharePointSitesAuthority: environmentSettings.sharePointSitesAuthority
         SharePointCentralAdminPort: environmentSettings.sharePointCentralAdminPort
         EnableAnalysis: environmentSettings.enableAnalysis
-        SharePointBits: environmentSettings.sharePointBitsDsc
+        SharePointBits: sharePointSubscriptionBits
         DefaultZoneMustBeHttps: defaultZoneMustBeHttps
         SharePointConfigurationLevel: sharePointConfigurationLevel
         CustomSharePointConfiguration: filter(customSharePointConfiguration, item => item != 'null')
@@ -744,7 +743,7 @@ var frontendVirtualMachinesSettings = {
       SQLAlias: environmentSettings.sqlAlias
       SharePointVersion: environmentSettings.sharePointVersion
       EnableAnalysis: environmentSettings.enableAnalysis
-      SharePointBits: environmentSettings.sharePointBitsDsc
+      SharePointBits: sharePointSubscriptionBits
     }
     privacy: {
       dataCollection: 'enable'
